@@ -1,7 +1,7 @@
 export type Role = "usuario" | "cliente";
 
 export type ResultCategory = "Factura" | "GuiaMovilizacion";
-export type ResultStatus = "nuevo" | "consultado" | "aprobado" | "observado";
+export type ResultStatus = "pendiente" | "pagado" | "entregado";
 
 export type LogisticsDocumentType = "factura" | "guia";
 
@@ -27,7 +27,7 @@ export type ResultDocument = {
   createdAt: string;
   tags?: string[];
   documentType: LogisticsDocumentType;
-  tipoDocumento: "Factura" | "Guia de movilizacion";
+  tipoDocumento: "Factura" | "Entrega";
   numeroFactura?: string;
   numeroGuia?: string;
   cliente: string;

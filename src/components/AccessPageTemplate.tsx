@@ -89,16 +89,16 @@ export function AccessPageTemplate({
 
           <div className="grid gap-4 md:grid-cols-2">
             <form className="rounded-lg border border-brand-border bg-brand-surface p-4" onSubmit={onUserSubmit}>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Usuario</p>
-              <p className="mt-2 text-sm text-brand-muted">Acceso operativo interno para el equipo G3.</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Usuario / Administrador</p>
+              <p className="mt-2 text-sm text-brand-muted">Acceso interno administrativo para el equipo G3.</p>
 
               <div className="mt-3">
-                <Label htmlFor="user-username">Usuario</Label>
+                <Label htmlFor="user-username">Usuario administrador</Label>
                 <Input
                   id="user-username"
                   value={userUsername}
                   onChange={(event) => onUserUsernameChange(event.target.value)}
-                  placeholder="usuario.g3"
+                  placeholder="administrador.g3"
                   className={fieldClass}
                   required
                 />
@@ -134,9 +134,8 @@ export function AccessPageTemplate({
               </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-white p-3 text-xs text-brand-muted">
-                <p className="font-semibold text-brand-text">Credenciales demo Perfil Usuario</p>
-                <p>- usuario.g3 / demo123</p>
-                <p>- operaciones.g3 / demo123</p>
+                <p className="font-semibold text-brand-text">Credenciales demo Perfil Administrador</p>
+                <p>- administrador.g3 / demo123</p>
               </div>
             </form>
 
@@ -150,7 +149,7 @@ export function AccessPageTemplate({
                   id="client-rif"
                   value={clientRif}
                   onChange={(event) => onClientRifChange(event.target.value)}
-                  placeholder="Ej. J401200019"
+                  placeholder="Ej. J000090424"
                   className={fieldClass}
                   required
                 />
@@ -187,6 +186,7 @@ export function AccessPageTemplate({
 
               <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-xs text-brand-muted">
                 <p className="font-semibold text-brand-text">Acceso demo Perfil Cliente (RIF + clave)</p>
+                <p>- J000090424 / demo123</p>
                 <p>- J401200019 / demo123</p>
                 <p>- J401200027 / demo123</p>
               </div>

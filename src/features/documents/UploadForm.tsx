@@ -39,24 +39,24 @@ export function UploadForm({ patient, actor }: Props) {
 
     const newDoc = await uploadDocument({
       file,
-      document: {
-        patientId: patient.id,
-        category,
-        studyName,
-        studyDate,
-        site: site || patient.site,
-        status: "nuevo",
-        fileName: file.name,
-        fileType: file.type.includes("image") ? "image" : "pdf",
-        tags: tags
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean),
-        documentType: isFactura ? "factura" : "guia",
-        tipoDocumento: isFactura ? "Factura" : "Guia de movilizacion",
-        numeroFactura: isFactura ? `FT-${serial}` : undefined,
-        numeroGuia: isFactura ? undefined : `GM-${serial}`,
-        cliente: patient.fullName,
+        document: {
+          patientId: patient.id,
+          category,
+          studyName,
+          studyDate,
+          site: site || patient.site,
+          status: "pendiente",
+          fileName: file.name,
+          fileType: file.type.includes("image") ? "image" : "pdf",
+          tags: tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean),
+          documentType: isFactura ? "factura" : "guia",
+          tipoDocumento: isFactura ? "Factura" : "Entrega",
+          numeroFactura: isFactura ? `FT-${serial}` : undefined,
+          numeroGuia: isFactura ? undefined : `GM-${serial}`,
+          cliente: patient.fullName,
         fechaEmision: studyDate,
         origen: site || patient.site,
         destino: "Pendiente de asignacion",
@@ -89,7 +89,7 @@ export function UploadForm({ patient, actor }: Props) {
           >
             {categories.map((option) => (
               <option key={option} value={option}>
-                {option === "Factura" ? "Factura" : "Guia de movilizacion"}
+                {option === "Factura" ? "Factura" : "Entrega"}
               </option>
             ))}
           </select>

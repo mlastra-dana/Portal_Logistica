@@ -21,15 +21,14 @@ function AdminGuard({ children }: { children: ReactNode }) {
   const role = useDemoRoleStore((s) => s.role);
 
   if (role !== "usuario") {
-    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Perfil Usuario." />;
+    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Perfil Administrador." />;
   }
 
   return <>{children}</>;
 }
 
 function statusTone(status: string): "warning" | "success" | "bad" {
-  if (status === "nuevo") return "warning";
-  if (status === "observado") return "bad";
+  if (status === "pendiente") return "warning";
   return "success";
 }
 
@@ -55,7 +54,7 @@ export function AdminPatientsPage() {
   const clientesActivos = mockPatients.filter((client) => (client.estatusCuenta || "").toLowerCase() === "activa").length;
 
   return (
-    <AuthedLayout title="Perfil Usuario · Resumen operativo" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Resumen operativo" items={adminNav}>
       <AdminGuard>
         <section className="grid gap-3 md:grid-cols-3">
           <Card className="rounded-lg shadow-none">
@@ -63,7 +62,7 @@ export function AdminPatientsPage() {
             <p className="mt-2 text-3xl font-black text-brand-ink">{totalFacturas}</p>
           </Card>
           <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de guias</p>
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de entregas</p>
             <p className="mt-2 text-3xl font-black text-brand-ink">{totalGuias}</p>
           </Card>
           <Card className="rounded-lg shadow-none">
@@ -73,13 +72,32 @@ export function AdminPatientsPage() {
         </section>
 
         <Card className="mt-3 rounded-lg shadow-none">
-          <Label htmlFor="search-clients">Modulo de clientes</Label>
-          <Input
-            id="search-clients"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por cliente, RIF, contacto o ciudad"
-          />
+          <div className="grid gap-3 md:grid-cols-2">
+            <div>
+              <Label htmlFor="search-clients">Modulo de clientes</Label>
+              <Input
+                id="search-clients"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por cliente, RIF, contacto o ciudad"
+              />
+            </div>
+            <div>
+              <Label htmlFor="client-selector">Seleccionar cliente</Label>
+              <select
+                id="client-selector"
+                value={selectedClient?.id || ""}
+                onChange={(e) => setSelectedClientId(e.target.value)}
+                className="w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm"
+              >
+                {filteredClients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {(client.nombreCliente || client.fullName)} - {client.rif || client.documentId}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </Card>
 
         <Card className="mt-3 rounded-lg shadow-none">
@@ -101,7 +119,7 @@ export function AdminPatientsPage() {
               <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-sm">
                 <p><strong>Documentos asociados:</strong> {selectedClientDocs.length}</p>
                 <p><strong>Facturas:</strong> {selectedClientDocs.filter((doc) => doc.documentType === "factura").length}</p>
-                <p><strong>Guias movilizacion:</strong> {selectedClientDocs.filter((doc) => doc.documentType === "guia").length}</p>
+                <p><strong>Entregas:</strong> {selectedClientDocs.filter((doc) => doc.documentType === "guia").length}</p>
               </div>
             </>
           ) : (
@@ -159,7 +177,7 @@ export function AdminUploadsPage() {
   }, [documents, query]);
 
   return (
-    <AuthedLayout title="Perfil Usuario · Documentos" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Documentos" items={adminNav}>
       <AdminGuard>
         <Card className="rounded-lg shadow-none">
           <Label htmlFor="search-operativo">Buscar en facturas y guias de movilizacion</Label>

@@ -65,13 +65,12 @@ export function AccessPage() {
     const p = userPassword.trim();
 
     const validUserCreds: Record<string, "usuario"> = {
-      "usuario.g3": "usuario",
-      "operaciones.g3": "usuario",
+      "administrador.g3": "usuario",
     };
 
     const matchedRole = validUserCreds[u];
     if (!matchedRole || p !== "demo123") {
-      setUserError("Credenciales invalidas para Perfil Usuario.");
+      setUserError("Credenciales invalidas para Perfil Administrador.");
       return;
     }
 

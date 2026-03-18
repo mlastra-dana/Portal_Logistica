@@ -12,7 +12,7 @@ import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import { useResultsStore } from "@/features/results/useResultsStore";
 import { mockPatients } from "@/mocks/patients";
 
-type TypeFilter = "all" | "Factura" | "Guia de movilizacion";
+type TypeFilter = "all" | "Factura" | "Entrega";
 
 function useActiveClient() {
   const session = useDemoRoleStore((s) => s.patientSession);
@@ -28,16 +28,14 @@ function resolveDocumentUrl(doc: ResultDocument) {
 }
 
 function statusTone(status: ResultDocument["status"]): "warning" | "success" | "bad" {
-  if (status === "nuevo") return "warning";
-  if (status === "observado") return "bad";
+  if (status === "pendiente") return "warning";
   return "success";
 }
 
 function statusLabel(status: ResultDocument["status"]) {
-  if (status === "nuevo") return "Nuevo";
-  if (status === "consultado") return "Consultado";
-  if (status === "aprobado") return "Aprobado";
-  return "Observado";
+  if (status === "pendiente") return "Pendiente";
+  if (status === "pagado") return "Pagado";
+  return "Entregado";
 }
 
 function DetailModal({
@@ -138,7 +136,7 @@ export function PatientMedicalResultsPage() {
       <section className="mx-auto max-w-7xl px-4 py-8">
         <Card className="rounded-lg border-brand-border shadow-none">
           <h1 className="text-2xl font-black text-brand-ink">Perfil Cliente · Mis documentos</h1>
-          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y guias de movilizacion del cliente activo.</p>
+          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y entregas del cliente activo.</p>
         </Card>
 
         {client === null ? (
@@ -150,7 +148,7 @@ export function PatientMedicalResultsPage() {
           </Card>
         ) : (
           <>
-            <section className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <section className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               <Card className="rounded-lg shadow-none">
                 <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Informacion de mi cuenta</p>
                 <p className="mt-2 text-sm font-semibold text-brand-ink">{client.nombreCliente || client.fullName}</p>
@@ -161,12 +159,8 @@ export function PatientMedicalResultsPage() {
                 <p className="mt-2 text-3xl font-black text-brand-ink">{facturas}</p>
               </Card>
               <Card className="rounded-lg shadow-none">
-                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Mis guias de movilizacion</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Mis entregas</p>
                 <p className="mt-2 text-3xl font-black text-brand-ink">{guias}</p>
-              </Card>
-              <Card className="rounded-lg shadow-none">
-                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Estado de mis documentos</p>
-                <p className="mt-2 text-sm font-semibold text-brand-ink">{docs.filter((doc) => doc.status === "observado").length} en observacion</p>
               </Card>
             </section>
 
@@ -180,7 +174,6 @@ export function PatientMedicalResultsPage() {
                 <p><strong>Telefono:</strong> {client.telefono || client.phone}</p>
                 <p><strong>Direccion fiscal:</strong> {client.direccionFiscal || client.address}</p>
                 <p><strong>Ciudad / Estado:</strong> {client.ciudad || "N/A"} / {client.estado || "N/A"}</p>
-                <p><strong>Tipo cliente:</strong> {client.tipoCliente || "Corporativo"}</p>
                 <p><strong>Estatus cuenta:</strong> {client.estatusCuenta || "Activa"}</p>
               </div>
             </Card>
@@ -206,7 +199,7 @@ export function PatientMedicalResultsPage() {
                   >
                     <option value="all">Todos</option>
                     <option value="Factura">Facturas</option>
-                    <option value="Guia de movilizacion">Guias de movilizacion</option>
+                    <option value="Entrega">Entregas</option>
                   </select>
                 </div>
               </div>

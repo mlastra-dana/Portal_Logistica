@@ -7,7 +7,7 @@ const roles: Role[] = ["cliente", "usuario"];
 
 const roleLabel: Record<Role, string> = {
   cliente: "Perfil Cliente",
-  usuario: "Perfil Usuario",
+  usuario: "Perfil Administrador",
 };
 
 export function RoleSwitch({ compact = true }: { compact?: boolean }) {

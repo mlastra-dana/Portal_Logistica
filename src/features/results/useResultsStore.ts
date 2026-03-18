@@ -24,7 +24,7 @@ export const useResultsStore = create<ResultsState>((set, get) => ({
   markAsViewed: (id) =>
     set((state) => ({
       documents: state.documents.map((doc) =>
-        doc.id === id ? { ...doc, status: "consultado" } : doc,
+        doc.id === id ? doc : doc,
       ),
     })),
   getDocumentsForPatient: (patientId, filters) => {

@@ -36,9 +36,8 @@ export function ResultsFilters({ filters, onChange }: Props) {
           className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
         >
           <option value="">Todos</option>
-          <option value="Laboratorio">Servicios médicos</option>
-          <option value="Rayos X">Rayos X</option>
-          <option value="Mamografias">Mamografias</option>
+          <option value="Factura">Facturas</option>
+          <option value="Entrega">Entregas</option>
         </select>
       </label>
       <label className="text-sm">
@@ -53,8 +52,9 @@ export function ResultsFilters({ filters, onChange }: Props) {
           className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
         >
           <option value="">Todos</option>
-          <option value="nuevo">Nuevo</option>
-          <option value="visto">Visto</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="pagado">Pagado</option>
+          <option value="entregado">Entregado</option>
         </select>
       </label>
     </div>
