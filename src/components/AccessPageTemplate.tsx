@@ -86,21 +86,21 @@ export function AccessPageTemplate({
         <Card className="rounded-xl border-brand-border bg-white p-6 shadow-none md:p-8">
           <div className="mb-6 border-l-4 border-brand-primary pl-4">
             <h1 className="text-2xl font-extrabold text-brand-ink md:text-3xl">Portal G3 Logistica</h1>
-            <p className="mt-2 text-sm text-brand-muted">Gestion documental logistica para facturas y guias de movilizacion.</p>
+            <p className="mt-2 text-sm text-brand-muted">Gestion logistica de facturas y despachos.</p>
           </div>
 
           {selectedProfile === null ? (
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="rounded-lg border border-brand-border bg-brand-surface p-5 shadow-none">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Administrador</p>
-                <p className="mt-2 text-sm text-brand-muted">Acceso interno para gestion operativa y control documental.</p>
+                <p className="mt-2 text-sm text-brand-muted">Acceso interno para gestion operativa y control de despachos.</p>
                 <Button className={`mt-4 w-full ${actionButton}`} onClick={() => setSelectedProfile("admin")}>
                   Administrador
                 </Button>
               </Card>
               <Card className="rounded-lg border border-brand-border bg-white p-5 shadow-none">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Cliente</p>
-                <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y guias de facturacion de tu cuenta.</p>
+                <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y despachos de tu cuenta.</p>
                 <Button className={`mt-4 w-full ${actionButton}`} onClick={() => setSelectedProfile("cliente")}>
                   Cliente
                 </Button>
@@ -167,7 +167,7 @@ export function AccessPageTemplate({
           {selectedProfile === "cliente" ? (
             <form className="rounded-lg border border-brand-border bg-white p-4" onSubmit={onClientSubmit}>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Cliente</p>
-              <p className="mt-2 text-sm text-brand-muted">Consulta documentos de cliente.</p>
+              <p className="mt-2 text-sm text-brand-muted">Consulta despachos del cliente.</p>
 
               <div className="mt-3">
                 <Label htmlFor="client-rif">RIF</Label>

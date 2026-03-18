@@ -15,7 +15,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           </div>
           <nav className="hidden items-center gap-6 text-sm text-brand-muted md:flex">
             <a href="#operacion">Operacion</a>
-            <a href="#documentos">Documentos</a>
+            <a href="#despachos">Despachos</a>
             <a href="#seguimiento">Seguimiento</a>
             <a href="#contacto">Contacto</a>
           </nav>
@@ -28,7 +28,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       <section className="mt-16 bg-brand-ink py-12 text-white" id="contacto">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4">
           <BrandMark className="brightness-0 invert" />
-          <p className="text-sm text-white/75">Gestion documental logistica para operaciones B2B</p>
+          <p className="text-sm text-white/75">Gestion de despachos logisticos para operaciones B2B</p>
         </div>
       </section>
     </div>

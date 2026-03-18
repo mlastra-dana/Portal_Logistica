@@ -66,7 +66,7 @@ function DetailModal({
         <div className="grid gap-4 p-4 md:grid-cols-[1.2fr_2fr]">
           <div className="rounded-lg border border-brand-border bg-brand-surface p-4 text-sm">
             <p><strong>Cliente:</strong> {document.cliente}</p>
-            <p><strong>Tipo de documento:</strong> {document.tipoDocumento}</p>
+            <p><strong>Tipo de despacho:</strong> {document.tipoDocumento}</p>
             <p><strong>Numero:</strong> {document.numeroFactura || document.numeroGuia || "N/A"}</p>
             <p><strong>Origen:</strong> {document.origen || "N/A"}</p>
             <p><strong>Destino:</strong> {document.destino || "N/A"}</p>
@@ -142,8 +142,8 @@ export function PatientMedicalResultsPage() {
     <DanaLayout>
       <section className="mx-auto max-w-7xl px-4 py-8">
         <Card className="rounded-lg border-brand-border shadow-none">
-          <h1 className="text-2xl font-black text-brand-ink">Perfil Cliente · Mis documentos</h1>
-          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y guias de facturacion del cliente activo.</p>
+          <h1 className="text-2xl font-black text-brand-ink">Perfil Cliente · Mis despachos</h1>
+          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y despachos del cliente activo.</p>
         </Card>
 
         {client === null ? (
@@ -188,7 +188,7 @@ export function PatientMedicalResultsPage() {
             <Card className="mt-4 rounded-lg shadow-none">
               <div className="grid gap-3 md:grid-cols-[2fr_1fr]">
                 <div>
-                  <Label htmlFor="client-query">Buscar documento</Label>
+                  <Label htmlFor="client-query">Buscar despacho</Label>
                   <Input
                     id="client-query"
                     value={query}
@@ -197,7 +197,7 @@ export function PatientMedicalResultsPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="client-type">Tipo de documento</Label>
+                  <Label htmlFor="client-type">Tipo de despacho</Label>
                   <select
                     id="client-type"
                     value={typeFilter}
@@ -217,7 +217,7 @@ export function PatientMedicalResultsPage() {
                 <table className="w-full min-w-[980px] text-left text-sm">
                   <thead className="bg-brand-surface text-brand-muted">
                     <tr>
-                      <th className="px-4 py-3 font-semibold">Tipo de documento</th>
+                      <th className="px-4 py-3 font-semibold">Tipo de despacho</th>
                       <th className="px-4 py-3 font-semibold">Numero</th>
                       <th className="px-4 py-3 font-semibold">Fecha</th>
                       <th className="px-4 py-3 font-semibold">Origen</th>

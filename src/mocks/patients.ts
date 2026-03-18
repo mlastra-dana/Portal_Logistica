@@ -29,7 +29,7 @@ export const mockPatients: PatientProfile[] = [
     site: "Centro logistico Guarenas",
     consents: [
       { id: "c-1", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-11" },
-      { id: "c-2", name: "Consulta documental digital", accepted: true, updatedAt: "2026-03-11" },
+      { id: "c-2", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-11" },
     ],
   },
   {
@@ -60,7 +60,7 @@ export const mockPatients: PatientProfile[] = [
     site: "Centro logistico Caracas",
     consents: [
       { id: "c-3", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-10" },
-      { id: "c-4", name: "Consulta documental digital", accepted: true, updatedAt: "2026-03-10" },
+      { id: "c-4", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-10" },
     ],
   },
   {
@@ -91,7 +91,7 @@ export const mockPatients: PatientProfile[] = [
     site: "Centro logistico Capital",
     consents: [
       { id: "c-5", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-09" },
-      { id: "c-6", name: "Consulta documental digital", accepted: true, updatedAt: "2026-03-09" },
+      { id: "c-6", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-09" },
     ],
   },
 ];

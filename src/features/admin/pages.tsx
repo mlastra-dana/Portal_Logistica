@@ -18,8 +18,8 @@ type TypeFilter = "all" | "Factura" | "Guia de facturacion";
 
 const adminNav = [
   { to: "/portal/usuario/dashboard", label: "Clientes" },
-  { to: "/portal/usuario/documentos", label: "Documentos" },
-  { to: "/portal/usuario/cargar", label: "Cargar documentos" },
+  { to: "/portal/usuario/despachos", label: "Despachos" },
+  { to: "/portal/usuario/cargar", label: "Cargar despachos" },
 ];
 
 function AdminGuard({ children }: { children: ReactNode }) {
@@ -73,7 +73,7 @@ function DetailModal({
         <div className="grid gap-4 p-4 md:grid-cols-[1.2fr_2fr]">
           <div className="rounded-lg border border-brand-border bg-brand-surface p-4 text-sm">
             <p><strong>Cliente:</strong> {document.cliente}</p>
-            <p><strong>Tipo de documento:</strong> {document.tipoDocumento}</p>
+            <p><strong>Tipo de despacho:</strong> {document.tipoDocumento}</p>
             <p><strong>Numero:</strong> {document.numeroFactura || document.numeroGuia || "N/A"}</p>
             <p><strong>Origen:</strong> {document.origen || "N/A"}</p>
             <p><strong>Destino:</strong> {document.destino || "N/A"}</p>
@@ -113,7 +113,7 @@ export function AdminPatientsPage() {
         <Card className="rounded-xl border-brand-border bg-gradient-to-r from-brand-primary to-brand-ink p-6 text-white shadow-none">
           <p className="text-xs uppercase tracking-[0.16em] text-white/80">Consola administrativa</p>
           <h2 className="mt-2 text-2xl font-black">Clientes</h2>
-          <p className="mt-2 text-sm text-white/90">Selecciona la cuenta para abrir sus documentos.</p>
+          <p className="mt-2 text-sm text-white/90">Selecciona la cuenta para abrir sus despachos.</p>
         </Card>
 
         <Card className="mt-3 rounded-lg shadow-none">
@@ -154,7 +154,7 @@ export function AdminPatientsPage() {
                   variant={isSelected ? "dark" : "ghost"}
                   onClick={() => {
                     setSelectedClientId(client.id);
-                    navigate("/portal/usuario/documentos");
+                    navigate("/portal/usuario/despachos");
                   }}
                 >
                   Abrir
@@ -219,11 +219,11 @@ export function AdminUploadsPage() {
   };
 
   return (
-    <AuthedLayout title="Perfil Administrador · Documentos" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Despachos" items={adminNav}>
       <AdminGuard>
         {selectedClient === null ? (
           <Card className="rounded-lg shadow-none">
-            <p className="text-sm text-brand-muted">Debes seleccionar un cliente primero para acceder a documentos.</p>
+            <p className="text-sm text-brand-muted">Debes seleccionar un cliente primero para acceder a despachos.</p>
             <Button className="mt-3 rounded-md" onClick={() => navigate("/portal/usuario/dashboard")}>
               Ir a clientes
             </Button>
@@ -234,7 +234,7 @@ export function AdminUploadsPage() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h1 className="text-2xl font-black text-brand-ink">{selectedClient.nombreCliente || selectedClient.fullName}</h1>
-                  <p className="mt-2 text-sm text-brand-muted">Ficha de cliente y documentos asociados.</p>
+                  <p className="mt-2 text-sm text-brand-muted">Ficha de cliente y despachos asociados.</p>
                 </div>
                 <Button variant="ghost" className="rounded-md" onClick={() => navigate("/portal/usuario/dashboard")}>
                   Cambiar cliente
@@ -276,16 +276,16 @@ export function AdminUploadsPage() {
             <Card className="mt-4 rounded-lg shadow-none">
               <div className="grid gap-3 md:grid-cols-[2fr_1fr]">
                 <div>
-                  <Label htmlFor="admin-client-query">Buscar documento</Label>
+                  <Label htmlFor="admin-client-query">Buscar despacho</Label>
                   <Input
                     id="admin-client-query"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Numero de factura, entrega o descripcion"
+                    placeholder="Numero de factura, guia o descripcion"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="admin-client-type">Tipo de documento</Label>
+                  <Label htmlFor="admin-client-type">Tipo de despacho</Label>
                   <select
                     id="admin-client-type"
                     value={typeFilter}
@@ -305,7 +305,7 @@ export function AdminUploadsPage() {
                 <table className="w-full min-w-[980px] text-left text-sm">
                   <thead className="bg-brand-surface text-brand-muted">
                     <tr>
-                      <th className="px-4 py-3 font-semibold">Tipo de documento</th>
+                      <th className="px-4 py-3 font-semibold">Tipo de despacho</th>
                       <th className="px-4 py-3 font-semibold">Numero</th>
                       <th className="px-4 py-3 font-semibold">Fecha</th>
                       <th className="px-4 py-3 font-semibold">Origen</th>
@@ -358,11 +358,11 @@ export function AdminUploadPage() {
   const selectedClient = mockPatients.find((item) => item.id === selectedClientId) || null;
 
   return (
-    <AuthedLayout title="Perfil Administrador · Carga documental" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Carga de despachos" items={adminNav}>
       <AdminGuard>
         <Card className="rounded-lg border-brand-border shadow-none">
-          <h1 className="text-2xl font-black text-brand-ink">Cargar documentos</h1>
-          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas cargarle un documento.</p>
+          <h1 className="text-2xl font-black text-brand-ink">Cargar despachos</h1>
+          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas cargarle un despacho.</p>
           <div className="mt-3">
             <Label htmlFor="upload-client-selector">Cliente</Label>
             <select

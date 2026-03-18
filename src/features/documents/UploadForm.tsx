@@ -30,7 +30,7 @@ export function UploadForm({ patient, actor }: Props) {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!patient || !file || !studyName || !studyDate) {
-      setStatus("Completa cliente, documento, fecha y archivo.");
+      setStatus("Completa cliente, despacho, fecha y archivo.");
       return;
     }
 
@@ -65,9 +65,9 @@ export function UploadForm({ patient, actor }: Props) {
 
     addDocument(newDoc);
     await saveDocumentMetadata(newDoc);
-    addAudit("upload", actor, `Documento logistico cargado: ${newDoc.studyName}`);
+    addAudit("upload", actor, `Despacho logistico cargado: ${newDoc.studyName}`);
 
-    setStatus("Documento cargado y metadata guardada (modo demostracion).");
+    setStatus("Despacho cargado y metadata guardada (modo demostracion).");
     setStudyName("");
     setStudyDate("");
     setTags("");
@@ -76,7 +76,7 @@ export function UploadForm({ patient, actor }: Props) {
 
   return (
     <Card>
-      <h3 className="mb-2 text-base font-semibold">Cargar documento logistico</h3>
+      <h3 className="mb-2 text-base font-semibold">Cargar despacho logistico</h3>
       <p className="mb-4 text-xs text-slate-500">{getStorageStatusMessage()}</p>
 
       <form className="space-y-3" onSubmit={onSubmit}>
@@ -96,7 +96,7 @@ export function UploadForm({ patient, actor }: Props) {
         </label>
 
         <label className="text-sm">
-          Nombre del documento
+          Nombre del despacho
           <Input
             placeholder="Ej. Factura de despacho febrero"
             value={studyName}
@@ -129,7 +129,7 @@ export function UploadForm({ patient, actor }: Props) {
         </label>
 
         <Button type="submit" className="w-full">
-          Guardar documento
+          Guardar despacho
         </Button>
       </form>
 
