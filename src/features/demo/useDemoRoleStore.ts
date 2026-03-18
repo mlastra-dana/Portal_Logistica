@@ -15,11 +15,13 @@ type DemoRoleState = {
   rolePickerOpen: boolean;
   tokenAccessBanner: string | null;
   patientSession: DemoPatientSession | null;
+  adminSelectedClientId: string | null;
   setRole: (role: Role) => void;
   openRolePicker: () => void;
   closeRolePicker: () => void;
   setTokenAccessBanner: (value: string | null) => void;
   setPatientSession: (session: DemoPatientSession) => void;
+  setAdminSelectedClientId: (clientId: string | null) => void;
   clearPatientSession: () => void;
   resetCompanySession: () => void;
 };
@@ -31,6 +33,7 @@ export const useDemoRoleStore = create<DemoRoleState>()(
       rolePickerOpen: false,
       tokenAccessBanner: null,
       patientSession: null,
+      adminSelectedClientId: null,
       setRole: (role) => {
         const prev = get().role;
         set({ role, rolePickerOpen: false });
@@ -41,6 +44,7 @@ export const useDemoRoleStore = create<DemoRoleState>()(
       openRolePicker: () => set({ rolePickerOpen: true }),
       closeRolePicker: () => set({ rolePickerOpen: false }),
       setTokenAccessBanner: (value) => set({ tokenAccessBanner: value }),
+      setAdminSelectedClientId: (clientId) => set({ adminSelectedClientId: clientId }),
       setPatientSession: (session) => {
         const prevRole = get().role;
         if (typeof window !== "undefined") {
@@ -70,6 +74,7 @@ export const useDemoRoleStore = create<DemoRoleState>()(
           patientSession: null,
           tokenAccessBanner: null,
           rolePickerOpen: false,
+          adminSelectedClientId: null,
         });
         useAuditStore.getState().addEvent("role_changed", "demo-user", "Salida del portal G3");
       },

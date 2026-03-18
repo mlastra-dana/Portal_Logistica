@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AccessPage, LandingPage, LoginPage, NotFoundPage, TokenAccessPage } from "@/app/pages";
-import { AdminPatientsPage, AdminUploadsPage } from "@/features/admin/pages";
+import { AdminClientViewPage, AdminPatientsPage, AdminUploadsPage } from "@/features/admin/pages";
 import {
   PatientClinicalDocumentsPage,
   PatientMedicalResultsPage,
@@ -20,6 +20,7 @@ export const router = createBrowserRouter([
   { path: "/portal/cliente/documentos", element: <PatientOverviewPage /> },
   { path: "/portal/usuario", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "/portal/usuario/dashboard", element: <AdminPatientsPage /> },
+  { path: "/portal/usuario/cliente", element: <AdminClientViewPage /> },
   { path: "/portal/usuario/documentos", element: <AdminUploadsPage /> },
   { path: "/portal/usuario/actividad", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "/results", element: <Navigate to="/portal/cliente" replace /> },

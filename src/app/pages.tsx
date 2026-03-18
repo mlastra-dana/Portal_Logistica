@@ -51,6 +51,7 @@ export function LandingPage() {
 export function AccessPage() {
   const navigate = useNavigate();
   const setRole = useDemoRoleStore((s) => s.setRole);
+  const setAdminSelectedClientId = useDemoRoleStore((s) => s.setAdminSelectedClientId);
   const setPatientSession = useDemoRoleStore((s) => s.setPatientSession);
   const [userUsername, setUserUsername] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -76,6 +77,7 @@ export function AccessPage() {
 
     setUserError("");
     setRole(matchedRole);
+    setAdminSelectedClientId(mockPatients[0]?.id || null);
     navigate("/portal/usuario", { replace: true });
   };
 
