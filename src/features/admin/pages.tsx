@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { ResponsiveTable } from "@/components/ui/ResponsiveTable";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import { useResultsStore } from "@/features/results/useResultsStore";
@@ -18,21 +17,22 @@ type TypeFilter = "all" | "Factura" | "Entrega";
 
 const adminNav = [
   { to: "/portal/usuario/dashboard", label: "Clientes" },
-  { to: "/portal/usuario/cliente", label: "Cliente seleccionado" },
   { to: "/portal/usuario/documentos", label: "Documentos" },
 ];
 
 function AdminGuard({ children }: { children: ReactNode }) {
   const role = useDemoRoleStore((s) => s.role);
-
   if (role !== "usuario") {
     return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Perfil Administrador." />;
   }
-
   return <>{children}</>;
 }
 
-function statusTone(status: string): "warning" | "success" | "bad" {
+function resolveDocumentUrl(doc: ResultDocument) {
+  return doc.url || doc.fileUrl;
+}
+
+function statusTone(status: ResultDocument["status"]): "warning" | "success" | "bad" {
   if (status === "pendiente") return "warning";
   return "success";
 }
@@ -41,10 +41,6 @@ function statusLabel(status: ResultDocument["status"]) {
   if (status === "pendiente") return "Pendiente";
   if (status === "pagado") return "Pagado";
   return "Entregado";
-}
-
-function resolveDocumentUrl(doc: ResultDocument) {
-  return doc.url || doc.fileUrl;
 }
 
 function DetailModal({
@@ -97,7 +93,6 @@ export function AdminPatientsPage() {
   const [query, setQuery] = useState("");
   const selectedClientId = useDemoRoleStore((s) => s.adminSelectedClientId);
   const setSelectedClientId = useDemoRoleStore((s) => s.setAdminSelectedClientId);
-  const documents = useResultsStore((s) => s.documents);
 
   const filteredClients = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -108,114 +103,70 @@ export function AdminPatientsPage() {
     });
   }, [query]);
 
-  const selectedClient = filteredClients.find((item) => item.id === selectedClientId) || filteredClients[0] || null;
-
-  const totalFacturas = documents.filter((doc) => doc.documentType === "factura").length;
-  const totalEntregas = documents.filter((doc) => doc.documentType === "guia").length;
-  const clientesActivos = mockPatients.filter((client) => (client.estatusCuenta || "").toLowerCase() === "activa").length;
-
-  const openSelectedClient = () => {
-    if (!selectedClient) return;
-    setSelectedClientId(selectedClient.id);
-    navigate("/portal/usuario/cliente");
-  };
+  const selectedClient = filteredClients.find((item) => item.id === selectedClientId) || null;
 
   return (
     <AuthedLayout title="Perfil Administrador · Seleccion de cliente" items={adminNav}>
       <AdminGuard>
-        <section className="grid gap-3 md:grid-cols-3">
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de facturas</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalFacturas}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de entregas</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalEntregas}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Clientes activos</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{clientesActivos}</p>
-          </Card>
-        </section>
-
-        <Card className="mt-3 rounded-lg shadow-none">
-          <div className="grid gap-3 md:grid-cols-[2fr_2fr_1fr]">
-            <div>
-              <Label htmlFor="search-clients">Modulo de clientes</Label>
-              <Input
-                id="search-clients"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar por cliente, RIF, contacto o ciudad"
-              />
-            </div>
-            <div>
-              <Label htmlFor="client-selector">Seleccionar cliente</Label>
-              <select
-                id="client-selector"
-                value={selectedClient?.id || ""}
-                onChange={(e) => setSelectedClientId(e.target.value)}
-                className="w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm"
-              >
-                {filteredClients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {(client.nombreCliente || client.fullName)} - {client.rif || client.documentId}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="self-end">
-              <Button className="w-full rounded-md" onClick={openSelectedClient}>
-                Revisar cliente
-              </Button>
-            </div>
-          </div>
+        <Card className="rounded-xl border-brand-border bg-gradient-to-r from-brand-primary to-brand-ink p-6 text-white shadow-none">
+          <p className="text-xs uppercase tracking-[0.16em] text-white/80">Consola administrativa</p>
+          <h2 className="mt-2 text-2xl font-black">Clientes</h2>
+          <p className="mt-2 text-sm text-white/90">Selecciona la cuenta para abrir su expediente documental.</p>
         </Card>
 
-        <div className="mt-3">
-          <ResponsiveTable
-            data={filteredClients}
-            mobileTitle={(row) => row.fullName}
-            columns={[
-              { key: "rif", header: "RIF", render: (row) => row.documentId },
-              { key: "contacto", header: "Contacto", render: (row) => row.contactoPrincipal || row.fullName },
-              { key: "correo", header: "Correo", render: (row) => row.email },
-              { key: "ciudad", header: "Ciudad / Estado", render: (row) => `${row.ciudad || "N/A"} / ${row.estado || "N/A"}` },
-              { key: "tipo", header: "Tipo cliente", render: (row) => row.tipoCliente || "Corporativo" },
-              {
-                key: "estatus",
-                header: "Estatus",
-                render: (row) => (
-                  <Badge tone={(row.estatusCuenta || "").toLowerCase() === "activa" ? "success" : "warning"} className="rounded-md uppercase tracking-[0.08em]">
-                    {row.estatusCuenta || "N/A"}
-                  </Badge>
-                ),
-              },
-              {
-                key: "accion",
-                header: "Accion",
-                render: (row) => (
-                  <Button
-                    variant={selectedClient?.id === row.id ? "dark" : "ghost"}
-                    className="rounded-md"
-                    onClick={() => {
-                      setSelectedClientId(row.id);
-                      navigate("/portal/usuario/cliente");
-                    }}
-                  >
-                    Seleccionar y abrir
-                  </Button>
-                ),
-              },
-            ]}
+        <Card className="mt-3 rounded-lg shadow-none">
+          <Label htmlFor="search-clients">Buscar cliente</Label>
+          <Input
+            id="search-clients"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Nombre, RIF o ciudad"
           />
-        </div>
+        </Card>
+
+        <section className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {filteredClients.map((client, index) => {
+            const code = client.historyNumber || `CLI-${String(index + 1).padStart(4, "0")}`;
+            const expediente = `EXP-${(client.rif || client.documentId).replace(/[^A-Z0-9]/gi, "").slice(-6)}`;
+            const isSelected = selectedClient?.id === client.id;
+            return (
+              <Card
+                key={client.id}
+                className={`rounded-xl border shadow-none transition ${isSelected ? "border-brand-primary ring-2 ring-brand-primary/20" : "border-brand-border"}`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.16em] text-brand-muted">Cuenta {code}</p>
+                    <h3 className="mt-1 text-base font-semibold text-brand-ink">{client.nombreCliente || client.fullName}</h3>
+                    <p className="mt-1 text-xs text-brand-muted">{client.rif || client.documentId}</p>
+                  </div>
+                  <Badge tone={(client.estatusCuenta || "").toLowerCase() === "activa" ? "success" : "warning"} className="rounded-md uppercase tracking-[0.08em]">
+                    {client.estatusCuenta || "N/A"}
+                  </Badge>
+                </div>
+                <div className="mt-3 rounded-lg border border-brand-border bg-brand-surface p-2 text-xs">
+                  <p><strong>Expediente:</strong> {expediente}</p>
+                </div>
+                <Button
+                  className="mt-3 w-full rounded-md"
+                  variant={isSelected ? "dark" : "ghost"}
+                  onClick={() => {
+                    setSelectedClientId(client.id);
+                    navigate("/portal/usuario/documentos");
+                  }}
+                >
+                  Abrir expediente
+                </Button>
+              </Card>
+            );
+          })}
+        </section>
       </AdminGuard>
     </AuthedLayout>
   );
 }
 
-export function AdminClientViewPage() {
+export function AdminUploadsPage() {
   const navigate = useNavigate();
   const addEvent = useAuditStore((s) => s.addEvent);
   const markAsViewed = useResultsStore((s) => s.markAsViewed);
@@ -259,13 +210,13 @@ export function AdminClientViewPage() {
   };
 
   return (
-    <AuthedLayout title="Perfil Administrador · Cliente seleccionado" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Documentos" items={adminNav}>
       <AdminGuard>
         {selectedClient === null ? (
           <Card className="rounded-lg shadow-none">
-            <p className="text-sm text-brand-muted">No hay cliente seleccionado. Selecciona uno para revisar su cuenta.</p>
+            <p className="text-sm text-brand-muted">Debes seleccionar un cliente primero para acceder a documentos.</p>
             <Button className="mt-3 rounded-md" onClick={() => navigate("/portal/usuario/dashboard")}>
-              Ir a seleccionar cliente
+              Ir a clientes
             </Button>
           </Card>
         ) : (
@@ -273,8 +224,8 @@ export function AdminClientViewPage() {
             <Card className="rounded-lg border-brand-border shadow-none">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h1 className="text-2xl font-black text-brand-ink">Vista Administrador · {selectedClient.nombreCliente || selectedClient.fullName}</h1>
-                  <p className="mt-2 text-sm text-brand-muted">Consulta administrativa de facturas y entregas del cliente seleccionado.</p>
+                  <h1 className="text-2xl font-black text-brand-ink">{selectedClient.nombreCliente || selectedClient.fullName}</h1>
+                  <p className="mt-2 text-sm text-brand-muted">Ficha de cliente y documentos asociados.</p>
                 </div>
                 <Button variant="ghost" className="rounded-md" onClick={() => navigate("/portal/usuario/dashboard")}>
                   Cambiar cliente
@@ -378,105 +329,12 @@ export function AdminClientViewPage() {
                   </tbody>
                 </table>
               </div>
-
-              <div className="space-y-3 p-3 md:hidden">
-                {docs.map((doc) => (
-                  <Card key={doc.id} className="rounded-lg p-3 shadow-none">
-                    <p className="font-semibold">{doc.tipoDocumento} {doc.numeroFactura || doc.numeroGuia}</p>
-                    <p className="mt-1 text-xs text-brand-muted">{doc.fechaEmision} · {doc.origen || "N/A"} a {doc.destino || "N/A"}</p>
-                    <Badge tone={statusTone(doc.status)} className="mt-2 rounded-md uppercase tracking-[0.08em]">
-                      {statusLabel(doc.status)}
-                    </Badge>
-                    <div className="mt-3 flex gap-2">
-                      <Button className="w-full rounded-md" onClick={() => onOpen(doc)}>Ver detalle</Button>
-                      <Button variant="ghost" className="w-full rounded-md" onClick={() => onDownload(doc)}>Descargar</Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
             </div>
           </>
         )}
       </AdminGuard>
 
       <DetailModal document={selectedDoc} onClose={() => setSelectedDoc(null)} onDownload={onDownload} />
-    </AuthedLayout>
-  );
-}
-
-export function AdminUploadsPage() {
-  const [query, setQuery] = useState("");
-  const selectedClientId = useDemoRoleStore((s) => s.adminSelectedClientId);
-  const setSelectedClientId = useDemoRoleStore((s) => s.setAdminSelectedClientId);
-  const documents = useResultsStore((s) => s.documents);
-  const selectedClient = mockPatients.find((client) => client.id === selectedClientId) || mockPatients[0] || null;
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const scoped = selectedClient ? documents.filter((doc) => doc.patientId === selectedClient.id) : documents;
-    if (!q) return scoped;
-    return scoped.filter((doc) => {
-      const haystack = `${doc.cliente} ${doc.numeroFactura || ""} ${doc.numeroGuia || ""} ${doc.origen || ""} ${doc.destino || ""}`.toLowerCase();
-      return haystack.includes(q);
-    });
-  }, [documents, query, selectedClient]);
-
-  return (
-    <AuthedLayout title="Perfil Administrador · Documentos del cliente" items={adminNav}>
-      <AdminGuard>
-        <Card className="rounded-lg shadow-none">
-          <div className="grid gap-3 md:grid-cols-2">
-            <div>
-              <Label htmlFor="client-selector-docs">Cliente seleccionado</Label>
-              <select
-                id="client-selector-docs"
-                value={selectedClient?.id || ""}
-                onChange={(e) => setSelectedClientId(e.target.value)}
-                className="w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm"
-              >
-                {mockPatients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {(client.nombreCliente || client.fullName)} - {client.rif || client.documentId}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Label htmlFor="search-operativo">Buscar en documentos del cliente</Label>
-              <Input
-                id="search-operativo"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Numero de documento, origen o destino"
-              />
-            </div>
-          </div>
-        </Card>
-
-        <div className="mt-3">
-          <ResponsiveTable
-            data={filtered}
-            mobileTitle={(row) => `${row.tipoDocumento} ${row.numeroFactura || row.numeroGuia || ""}`}
-            columns={[
-              { key: "tipo", header: "Tipo", render: (row) => row.tipoDocumento },
-              { key: "numero", header: "Numero", render: (row) => row.numeroFactura || row.numeroGuia || "N/A" },
-              { key: "cliente", header: "Cliente", render: (row) => row.cliente },
-              { key: "fecha", header: "Fecha", render: (row) => row.fechaEmision },
-              { key: "origen", header: "Origen", render: (row) => row.origen || "N/A" },
-              { key: "destino", header: "Destino", render: (row) => row.destino || "N/A" },
-              {
-                key: "estado",
-                header: "Estado del documento",
-                render: (row) => (
-                  <Badge tone={statusTone(row.status)} className="rounded-md uppercase tracking-[0.08em]">
-                    {statusLabel(row.status)}
-                  </Badge>
-                ),
-              },
-            ]}
-          />
-        </div>
-      </AdminGuard>
     </AuthedLayout>
   );
 }

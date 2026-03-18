@@ -77,7 +77,7 @@ export function AccessPage() {
 
     setUserError("");
     setRole(matchedRole);
-    setAdminSelectedClientId(mockPatients[0]?.id || null);
+    setAdminSelectedClientId(null);
     navigate("/portal/usuario", { replace: true });
   };
 
