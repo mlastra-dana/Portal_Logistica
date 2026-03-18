@@ -111,7 +111,7 @@ export function AdminPatientsPage() {
         <Card className="rounded-xl border-brand-border bg-gradient-to-r from-brand-primary to-brand-ink p-6 text-white shadow-none">
           <p className="text-xs uppercase tracking-[0.16em] text-white/80">Consola administrativa</p>
           <h2 className="mt-2 text-2xl font-black">Clientes</h2>
-          <p className="mt-2 text-sm text-white/90">Selecciona la cuenta para abrir su expediente documental.</p>
+          <p className="mt-2 text-sm text-white/90">Selecciona la cuenta para abrir sus documentos.</p>
         </Card>
 
         <Card className="mt-3 rounded-lg shadow-none">
@@ -127,7 +127,7 @@ export function AdminPatientsPage() {
         <section className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {filteredClients.map((client, index) => {
             const code = client.historyNumber || `CLI-${String(index + 1).padStart(4, "0")}`;
-            const expediente = `EXP-${(client.rif || client.documentId).replace(/[^A-Z0-9]/gi, "").slice(-6)}`;
+            const codigoCliente = `CL-${(client.rif || client.documentId).replace(/[^A-Z0-9]/gi, "").slice(-6)}`;
             const isSelected = selectedClient?.id === client.id;
             return (
               <Card
@@ -145,7 +145,7 @@ export function AdminPatientsPage() {
                   </Badge>
                 </div>
                 <div className="mt-3 rounded-lg border border-brand-border bg-brand-surface p-2 text-xs">
-                  <p><strong>Expediente:</strong> {expediente}</p>
+                  <p><strong>Codigo cliente:</strong> {codigoCliente}</p>
                 </div>
                 <Button
                   className="mt-3 w-full rounded-md"
@@ -155,7 +155,7 @@ export function AdminPatientsPage() {
                     navigate("/portal/usuario/documentos");
                   }}
                 >
-                  Abrir expediente
+                  Abrir
                 </Button>
               </Card>
             );
@@ -178,6 +178,13 @@ export function AdminUploadsPage() {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [selectedDoc, setSelectedDoc] = useState<ResultDocument | null>(null);
 
+  const allClientDocs = useMemo(() => {
+    if (!selectedClient) return [];
+    return getDocumentsForPatient(selectedClient.id, {
+      documentId: selectedClient.documentId,
+    });
+  }, [getDocumentsForPatient, selectedClient]);
+
   const docs = useMemo(() => {
     if (!selectedClient) return [];
     const base = getDocumentsForPatient(selectedClient.id, {
@@ -188,8 +195,8 @@ export function AdminUploadsPage() {
     return base.filter((doc) => doc.tipoDocumento === typeFilter);
   }, [getDocumentsForPatient, selectedClient, query, typeFilter]);
 
-  const facturas = docs.filter((doc) => doc.documentType === "factura").length;
-  const entregas = docs.filter((doc) => doc.documentType === "guia").length;
+  const facturas = allClientDocs.filter((doc) => doc.documentType === "factura").length;
+  const entregas = allClientDocs.filter((doc) => doc.documentType === "guia").length;
 
   const onOpen = (doc: ResultDocument) => {
     setSelectedDoc(doc);

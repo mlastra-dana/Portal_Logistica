@@ -94,6 +94,13 @@ export function PatientMedicalResultsPage() {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [selectedDoc, setSelectedDoc] = useState<ResultDocument | null>(null);
 
+  const allClientDocs = useMemo(() => {
+    if (client === null) return [];
+    return getDocumentsForPatient(client.id, {
+      documentId: client.documentId,
+    });
+  }, [client, getDocumentsForPatient]);
+
   const docs = useMemo(() => {
     if (client === null) return [];
 
@@ -128,8 +135,8 @@ export function PatientMedicalResultsPage() {
     anchor.remove();
   };
 
-  const facturas = docs.filter((doc) => doc.documentType === "factura").length;
-  const guias = docs.filter((doc) => doc.documentType === "guia").length;
+  const facturas = allClientDocs.filter((doc) => doc.documentType === "factura").length;
+  const guias = allClientDocs.filter((doc) => doc.documentType === "guia").length;
 
   return (
     <DanaLayout>
