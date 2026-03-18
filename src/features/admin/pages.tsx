@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
+import { UploadForm } from "@/features/documents/UploadForm";
 import { useResultsStore } from "@/features/results/useResultsStore";
 import { mockPatients } from "@/mocks/patients";
 
@@ -18,6 +19,7 @@ type TypeFilter = "all" | "Factura" | "Guia de facturacion";
 const adminNav = [
   { to: "/portal/usuario/dashboard", label: "Clientes" },
   { to: "/portal/usuario/documentos", label: "Documentos" },
+  { to: "/portal/usuario/cargar", label: "Cargar documentos" },
 ];
 
 function AdminGuard({ children }: { children: ReactNode }) {
@@ -348,4 +350,47 @@ export function AdminUploadsPage() {
 
 export function AdminAuditPage() {
   return <Navigate to="/portal/usuario/dashboard" replace />;
+}
+
+export function AdminUploadPage() {
+  const selectedClientId = useDemoRoleStore((s) => s.adminSelectedClientId);
+  const setSelectedClientId = useDemoRoleStore((s) => s.setAdminSelectedClientId);
+  const selectedClient = mockPatients.find((item) => item.id === selectedClientId) || null;
+
+  return (
+    <AuthedLayout title="Perfil Administrador · Carga documental" items={adminNav}>
+      <AdminGuard>
+        <Card className="rounded-lg border-brand-border shadow-none">
+          <h1 className="text-2xl font-black text-brand-ink">Cargar documentos</h1>
+          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas cargarle un documento.</p>
+          <div className="mt-3">
+            <Label htmlFor="upload-client-selector">Cliente</Label>
+            <select
+              id="upload-client-selector"
+              value={selectedClient?.id || ""}
+              onChange={(e) => setSelectedClientId(e.target.value || null)}
+              className="w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm"
+            >
+              <option value="">Selecciona una cuenta</option>
+              {mockPatients.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {(client.nombreCliente || client.fullName)} - {client.rif || client.documentId}
+                </option>
+              ))}
+            </select>
+          </div>
+        </Card>
+
+        {selectedClient ? (
+          <div className="mt-4">
+            <UploadForm patient={selectedClient} actor="admin-user" />
+          </div>
+        ) : (
+          <Card className="mt-4 rounded-lg shadow-none">
+            <p className="text-sm text-brand-muted">Selecciona un cliente para habilitar la carga.</p>
+          </Card>
+        )}
+      </AdminGuard>
+    </AuthedLayout>
+  );
 }

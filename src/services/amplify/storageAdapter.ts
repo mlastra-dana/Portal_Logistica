@@ -12,11 +12,15 @@ export async function uploadDocument(payload: UploadPayload): Promise<ResultDocu
     throw new Error("Storage Cognito/S3 aun no conectado en este prototipo");
   }
 
+  const localUrl = URL.createObjectURL(payload.file);
   return {
     ...payload.document,
     id: `mock-${Date.now()}`,
     createdAt: new Date().toISOString(),
-    fileUrl: "/sample-docs/example-result.pdf",
+    fileUrl: localUrl,
+    url: localUrl,
+    type: payload.document.fileType,
+    mimeType: payload.file.type || "application/octet-stream",
   };
 }
 

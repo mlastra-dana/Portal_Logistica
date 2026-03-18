@@ -26,6 +26,7 @@ type Props = {
 const fieldClass =
   "w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm text-brand-text outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20";
 const actionButton = "rounded-md !border-brand-primary !bg-brand-primary !text-white shadow-none";
+type AccessProfile = "admin" | "cliente" | null;
 
 export function AccessPageTemplate({
   userUsername,
@@ -44,6 +45,7 @@ export function AccessPageTemplate({
   const { exitToSelector } = useCompanySession();
   const [showUserPassword, setShowUserPassword] = useState(false);
   const [showClientPassword, setShowClientPassword] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<AccessProfile>(null);
 
   const eyeIcon = (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -87,9 +89,28 @@ export function AccessPageTemplate({
             <p className="mt-2 text-sm text-brand-muted">Gestion documental logistica para facturas y guias de movilizacion.</p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          {selectedProfile === null ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card className="rounded-lg border border-brand-border bg-brand-surface p-5 shadow-none">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Administrador</p>
+                <p className="mt-2 text-sm text-brand-muted">Acceso interno para gestion operativa y control documental.</p>
+                <Button className={`mt-4 w-full ${actionButton}`} onClick={() => setSelectedProfile("admin")}>
+                  Administrador
+                </Button>
+              </Card>
+              <Card className="rounded-lg border border-brand-border bg-white p-5 shadow-none">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Cliente</p>
+                <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y guias de facturacion de tu cuenta.</p>
+                <Button className={`mt-4 w-full ${actionButton}`} onClick={() => setSelectedProfile("cliente")}>
+                  Cliente
+                </Button>
+              </Card>
+            </div>
+          ) : null}
+
+          {selectedProfile === "admin" ? (
             <form className="rounded-lg border border-brand-border bg-brand-surface p-4" onSubmit={onUserSubmit}>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Usuario / Administrador</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Administrador</p>
               <p className="mt-2 text-sm text-brand-muted">Acceso interno administrativo para el equipo G3.</p>
 
               <div className="mt-3">
@@ -132,13 +153,18 @@ export function AccessPageTemplate({
               <Button type="submit" className={`mt-3 w-full ${actionButton}`}>
                 Entrar
               </Button>
+              <Button type="button" variant="ghost" className="mt-2 w-full rounded-md" onClick={() => setSelectedProfile(null)}>
+                Cambiar perfil
+              </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-white p-3 text-xs text-brand-muted">
                 <p className="font-semibold text-brand-text">Credenciales demo Perfil Administrador</p>
                 <p>- administrador.g3 / demo123</p>
               </div>
             </form>
+          ) : null}
 
+          {selectedProfile === "cliente" ? (
             <form className="rounded-lg border border-brand-border bg-white p-4" onSubmit={onClientSubmit}>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Cliente</p>
               <p className="mt-2 text-sm text-brand-muted">Consulta documentos de cliente.</p>
@@ -183,6 +209,9 @@ export function AccessPageTemplate({
               <Button type="submit" className={`mt-3 w-full ${actionButton}`}>
                 Entrar
               </Button>
+              <Button type="button" variant="ghost" className="mt-2 w-full rounded-md" onClick={() => setSelectedProfile(null)}>
+                Cambiar perfil
+              </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-xs text-brand-muted">
                 <p className="font-semibold text-brand-text">Acceso demo Perfil Cliente (RIF + clave)</p>
@@ -191,7 +220,7 @@ export function AccessPageTemplate({
                 <p>- J401200027 / demo123</p>
               </div>
             </form>
-          </div>
+          ) : null}
         </Card>
       </section>
     </div>
