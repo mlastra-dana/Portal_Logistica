@@ -13,7 +13,7 @@ import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import { useResultsStore } from "@/features/results/useResultsStore";
 import { mockPatients } from "@/mocks/patients";
 
-type TypeFilter = "all" | "Factura" | "Entrega";
+type TypeFilter = "all" | "Factura" | "Guia de facturacion";
 
 const adminNav = [
   { to: "/portal/usuario/dashboard", label: "Clientes" },
@@ -196,7 +196,7 @@ export function AdminUploadsPage() {
   }, [getDocumentsForPatient, selectedClient, query, typeFilter]);
 
   const facturas = allClientDocs.filter((doc) => doc.documentType === "factura").length;
-  const entregas = allClientDocs.filter((doc) => doc.documentType === "guia").length;
+  const guiasFacturacion = allClientDocs.filter((doc) => doc.documentType === "guia").length;
 
   const onOpen = (doc: ResultDocument) => {
     setSelectedDoc(doc);
@@ -251,8 +251,8 @@ export function AdminUploadsPage() {
                 <p className="mt-2 text-3xl font-black text-brand-ink">{facturas}</p>
               </Card>
               <Card className="rounded-lg shadow-none">
-                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Entregas</p>
-                <p className="mt-2 text-3xl font-black text-brand-ink">{entregas}</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Guias de facturacion</p>
+                <p className="mt-2 text-3xl font-black text-brand-ink">{guiasFacturacion}</p>
               </Card>
             </section>
 
@@ -292,7 +292,7 @@ export function AdminUploadsPage() {
                   >
                     <option value="all">Todos</option>
                     <option value="Factura">Facturas</option>
-                    <option value="Entrega">Entregas</option>
+                    <option value="Guia de facturacion">Guias de facturacion</option>
                   </select>
                 </div>
               </div>

@@ -12,7 +12,7 @@ import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import { useResultsStore } from "@/features/results/useResultsStore";
 import { mockPatients } from "@/mocks/patients";
 
-type TypeFilter = "all" | "Factura" | "Entrega";
+type TypeFilter = "all" | "Factura" | "Guia de facturacion";
 
 function useActiveClient() {
   const session = useDemoRoleStore((s) => s.patientSession);
@@ -143,7 +143,7 @@ export function PatientMedicalResultsPage() {
       <section className="mx-auto max-w-7xl px-4 py-8">
         <Card className="rounded-lg border-brand-border shadow-none">
           <h1 className="text-2xl font-black text-brand-ink">Perfil Cliente · Mis documentos</h1>
-          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y entregas del cliente activo.</p>
+          <p className="mt-2 text-sm text-brand-muted">Consulta de facturas y guias de facturacion del cliente activo.</p>
         </Card>
 
         {client === null ? (
@@ -166,7 +166,7 @@ export function PatientMedicalResultsPage() {
                 <p className="mt-2 text-3xl font-black text-brand-ink">{facturas}</p>
               </Card>
               <Card className="rounded-lg shadow-none">
-                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Mis entregas</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Mis guias de facturacion</p>
                 <p className="mt-2 text-3xl font-black text-brand-ink">{guias}</p>
               </Card>
             </section>
@@ -206,7 +206,7 @@ export function PatientMedicalResultsPage() {
                   >
                     <option value="all">Todos</option>
                     <option value="Factura">Facturas</option>
-                    <option value="Entrega">Entregas</option>
+                    <option value="Guia de facturacion">Guias de facturacion</option>
                   </select>
                 </div>
               </div>

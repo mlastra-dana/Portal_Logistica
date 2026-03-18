@@ -53,7 +53,7 @@ export function UploadForm({ patient, actor }: Props) {
             .map((tag) => tag.trim())
             .filter(Boolean),
           documentType: isFactura ? "factura" : "guia",
-          tipoDocumento: isFactura ? "Factura" : "Entrega",
+          tipoDocumento: isFactura ? "Factura" : "Guia de facturacion",
           numeroFactura: isFactura ? `FT-${serial}` : undefined,
           numeroGuia: isFactura ? undefined : `GM-${serial}`,
           cliente: patient.fullName,
@@ -89,7 +89,7 @@ export function UploadForm({ patient, actor }: Props) {
           >
             {categories.map((option) => (
               <option key={option} value={option}>
-                {option === "Factura" ? "Factura" : "Entrega"}
+                {option === "Factura" ? "Factura" : "Guia de facturacion"}
               </option>
             ))}
           </select>
