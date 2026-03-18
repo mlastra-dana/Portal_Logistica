@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AccessPage, LandingPage, LoginPage, NotFoundPage, TokenAccessPage } from "@/app/pages";
-import { AdminAuditPage, AdminPatientsPage, AdminUploadsPage } from "@/features/admin/pages";
+import { AdminPatientsPage, AdminUploadsPage } from "@/features/admin/pages";
 import {
   PatientClinicalDocumentsPage,
   PatientMedicalResultsPage,
@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
   { path: "/portal/usuario", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "/portal/usuario/dashboard", element: <AdminPatientsPage /> },
   { path: "/portal/usuario/documentos", element: <AdminUploadsPage /> },
-  { path: "/portal/usuario/actividad", element: <AdminAuditPage /> },
+  { path: "/portal/usuario/actividad", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "/results", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/results/overview", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/results/labs", element: <Navigate to="/portal/cliente" replace /> },
@@ -31,6 +31,6 @@ export const router = createBrowserRouter([
   { path: "/admin", element: <Navigate to="/portal/usuario" replace /> },
   { path: "/admin/patients", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "/admin/uploads", element: <Navigate to="/portal/usuario/documentos" replace /> },
-  { path: "/admin/audit", element: <Navigate to="/portal/usuario/actividad" replace /> },
+  { path: "/admin/audit", element: <Navigate to="/portal/usuario/dashboard" replace /> },
   { path: "*", element: <NotFoundPage /> },
 ]);

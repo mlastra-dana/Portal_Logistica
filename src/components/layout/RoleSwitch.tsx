@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/Button";
 import { useCompanySession } from "@/features/demo/useCompanySession";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 
-const roles: Role[] = ["cliente", "administrador"];
+const roles: Role[] = ["cliente", "usuario"];
 
 const roleLabel: Record<Role, string> = {
   cliente: "Perfil Cliente",
-  administrador: "Perfil Administrador",
+  usuario: "Perfil Usuario",
 };
 
 export function RoleSwitch({ compact = true }: { compact?: boolean }) {

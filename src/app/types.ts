@@ -1,4 +1,4 @@
-export type Role = "administrador" | "cliente";
+export type Role = "usuario" | "cliente";
 
 export type ResultCategory = "Factura" | "GuiaMovilizacion";
 export type ResultStatus = "nuevo" | "consultado" | "aprobado" | "observado";

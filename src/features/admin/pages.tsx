@@ -1,26 +1,27 @@
 import { ReactNode, useMemo, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { AuthedLayout } from "@/components/layout/AuthedLayout";
 import { RestrictedAccess } from "@/components/layout/RestrictedAccess";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { ResponsiveTable } from "@/components/ui/ResponsiveTable";
-import { AuditLog } from "@/features/audit/AuditLog";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import { useResultsStore } from "@/features/results/useResultsStore";
+import { mockPatients } from "@/mocks/patients";
 
 const adminNav = [
   { to: "/portal/usuario/dashboard", label: "Resumen operativo" },
   { to: "/portal/usuario/documentos", label: "Documentos" },
-  { to: "/portal/usuario/actividad", label: "Actividad" },
 ];
 
 function AdminGuard({ children }: { children: ReactNode }) {
   const role = useDemoRoleStore((s) => s.role);
 
-  if (role !== "administrador") {
-    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Administrador G3." />;
+  if (role !== "usuario") {
+    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Perfil Usuario." />;
   }
 
   return <>{children}</>;
@@ -34,26 +35,29 @@ function statusTone(status: string): "warning" | "success" | "bad" {
 
 export function AdminPatientsPage() {
   const [query, setQuery] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState(mockPatients[0]?.id || "");
   const documents = useResultsStore((s) => s.documents);
 
-  const filtered = useMemo(() => {
+  const filteredClients = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return documents;
-    return documents.filter((doc) => {
-      const haystack = `${doc.cliente} ${doc.numeroFactura || ""} ${doc.numeroGuia || ""} ${doc.tipoDocumento}`.toLowerCase();
+    if (!q) return mockPatients;
+    return mockPatients.filter((client) => {
+      const haystack = `${client.fullName} ${client.documentId} ${client.contactoPrincipal || ""} ${client.ciudad || ""}`.toLowerCase();
       return haystack.includes(q);
     });
-  }, [documents, query]);
+  }, [query]);
+
+  const selectedClient = filteredClients.find((item) => item.id === selectedClientId) || filteredClients[0] || null;
+  const selectedClientDocs = selectedClient ? documents.filter((doc) => doc.patientId === selectedClient.id) : [];
 
   const totalFacturas = documents.filter((doc) => doc.documentType === "factura").length;
   const totalGuias = documents.filter((doc) => doc.documentType === "guia").length;
-  const totalObservados = documents.filter((doc) => doc.status === "observado").length;
-  const totalNuevos = documents.filter((doc) => doc.status === "nuevo").length;
+  const clientesActivos = mockPatients.filter((client) => (client.estatusCuenta || "").toLowerCase() === "activa").length;
 
   return (
-    <AuthedLayout title="Perfil Administrador · Resumen operativo" items={adminNav}>
+    <AuthedLayout title="Perfil Usuario · Resumen operativo" items={adminNav}>
       <AdminGuard>
-        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-3 md:grid-cols-3">
           <Card className="rounded-lg shadow-none">
             <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de facturas</p>
             <p className="mt-2 text-3xl font-black text-brand-ink">{totalFacturas}</p>
@@ -63,43 +67,74 @@ export function AdminPatientsPage() {
             <p className="mt-2 text-3xl font-black text-brand-ink">{totalGuias}</p>
           </Card>
           <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Documentos nuevos</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalNuevos}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">En observacion</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalObservados}</p>
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Clientes activos</p>
+            <p className="mt-2 text-3xl font-black text-brand-ink">{clientesActivos}</p>
           </Card>
         </section>
 
         <Card className="mt-3 rounded-lg shadow-none">
-          <Label htmlFor="search-docs">Consulta de documentos</Label>
+          <Label htmlFor="search-clients">Modulo de clientes</Label>
           <Input
-            id="search-docs"
+            id="search-clients"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por cliente, numero de factura o numero de guia"
+            placeholder="Buscar por cliente, RIF, contacto o ciudad"
           />
+        </Card>
+
+        <Card className="mt-3 rounded-lg shadow-none">
+          <h3 className="text-base font-semibold">Informacion del cliente</h3>
+          {selectedClient ? (
+            <>
+              <div className="mt-3 grid gap-2 text-sm md:grid-cols-2 xl:grid-cols-3">
+                <p><strong>Nombre cliente:</strong> {selectedClient.nombreCliente || selectedClient.fullName}</p>
+                <p><strong>RIF:</strong> {selectedClient.rif || selectedClient.documentId}</p>
+                <p><strong>Contacto principal:</strong> {selectedClient.contactoPrincipal || selectedClient.fullName}</p>
+                <p><strong>Correo:</strong> {selectedClient.correo || selectedClient.email}</p>
+                <p><strong>Telefono:</strong> {selectedClient.telefono || selectedClient.phone}</p>
+                <p><strong>Direccion fiscal:</strong> {selectedClient.direccionFiscal || selectedClient.address}</p>
+                <p><strong>Ciudad / Estado:</strong> {selectedClient.ciudad || "N/A"} / {selectedClient.estado || "N/A"}</p>
+                <p><strong>Tipo cliente:</strong> {selectedClient.tipoCliente || "Corporativo"}</p>
+                <p><strong>Estatus cuenta:</strong> {selectedClient.estatusCuenta || "Activa"}</p>
+              </div>
+
+              <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-sm">
+                <p><strong>Documentos asociados:</strong> {selectedClientDocs.length}</p>
+                <p><strong>Facturas:</strong> {selectedClientDocs.filter((doc) => doc.documentType === "factura").length}</p>
+                <p><strong>Guias movilizacion:</strong> {selectedClientDocs.filter((doc) => doc.documentType === "guia").length}</p>
+              </div>
+            </>
+          ) : (
+            <p className="mt-3 text-sm text-brand-muted">No hay clientes para mostrar.</p>
+          )}
         </Card>
 
         <div className="mt-3">
           <ResponsiveTable
-            data={filtered.slice(0, 8)}
-            mobileTitle={(row) => row.cliente}
+            data={filteredClients}
+            mobileTitle={(row) => row.fullName}
             columns={[
-              { key: "tipo", header: "Tipo de documento", render: (row) => row.tipoDocumento },
-              { key: "numero", header: "Numero", render: (row) => row.numeroFactura || row.numeroGuia || "N/A" },
-              { key: "cliente", header: "Cliente", render: (row) => row.cliente },
-              { key: "fecha", header: "Fecha", render: (row) => row.fechaEmision },
-              { key: "origen", header: "Origen", render: (row) => row.origen || "N/A" },
-              { key: "destino", header: "Destino", render: (row) => row.destino || "N/A" },
+              { key: "rif", header: "RIF", render: (row) => row.documentId },
+              { key: "contacto", header: "Contacto", render: (row) => row.contactoPrincipal || row.fullName },
+              { key: "correo", header: "Correo", render: (row) => row.email },
+              { key: "ciudad", header: "Ciudad / Estado", render: (row) => `${row.ciudad || "N/A"} / ${row.estado || "N/A"}` },
+              { key: "tipo", header: "Tipo cliente", render: (row) => row.tipoCliente || "Corporativo" },
               {
-                key: "estado",
-                header: "Estado",
+                key: "estatus",
+                header: "Estatus",
                 render: (row) => (
-                  <Badge tone={statusTone(row.status)} className="rounded-md uppercase tracking-[0.08em]">
-                    {row.status}
+                  <Badge tone={(row.estatusCuenta || "").toLowerCase() === "activa" ? "success" : "warning"} className="rounded-md uppercase tracking-[0.08em]">
+                    {row.estatusCuenta || "N/A"}
                   </Badge>
+                ),
+              },
+              {
+                key: "accion",
+                header: "Accion",
+                render: (row) => (
+                  <Button variant={selectedClient?.id === row.id ? "dark" : "ghost"} className="rounded-md" onClick={() => setSelectedClientId(row.id)}>
+                    Ver cuenta
+                  </Button>
                 ),
               },
             ]}
@@ -124,7 +159,7 @@ export function AdminUploadsPage() {
   }, [documents, query]);
 
   return (
-    <AuthedLayout title="Perfil Administrador · Documentos" items={adminNav}>
+    <AuthedLayout title="Perfil Usuario · Documentos" items={adminNav}>
       <AdminGuard>
         <Card className="rounded-lg shadow-none">
           <Label htmlFor="search-operativo">Buscar en facturas y guias de movilizacion</Label>
@@ -165,17 +200,5 @@ export function AdminUploadsPage() {
 }
 
 export function AdminAuditPage() {
-  return (
-    <AuthedLayout title="Perfil Administrador · Actividad" items={adminNav}>
-      <AdminGuard>
-        <Card className="rounded-lg shadow-none">
-          <h2 className="text-base font-semibold">Estado de documentos</h2>
-          <p className="mt-2 text-sm text-brand-muted">Registro de actividad de consulta, descargas y cambios de perfil en modo demostracion.</p>
-        </Card>
-        <div className="mt-3">
-          <AuditLog />
-        </div>
-      </AdminGuard>
-    </AuthedLayout>
-  );
+  return <Navigate to="/portal/usuario/dashboard" replace />;
 }

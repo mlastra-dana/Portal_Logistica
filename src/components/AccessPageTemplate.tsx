@@ -71,8 +71,8 @@ export function AccessPageTemplate({
 
           <div className="grid gap-4 md:grid-cols-2">
             <form className="rounded-lg border border-brand-border bg-brand-surface p-4" onSubmit={onUserSubmit}>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil G3 (Administrador)</p>
-              <p className="mt-2 text-sm text-brand-muted">Acceso interno exclusivo para Administrador.</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Usuario</p>
+              <p className="mt-2 text-sm text-brand-muted">Acceso operativo interno para el equipo G3.</p>
 
               <div className="mt-3">
                 <Label htmlFor="user-username">Usuario</Label>
@@ -80,7 +80,7 @@ export function AccessPageTemplate({
                   id="user-username"
                   value={userUsername}
                   onChange={(event) => onUserUsernameChange(event.target.value)}
-                  placeholder="administrador.g3"
+                  placeholder="usuario.g3"
                   className={fieldClass}
                   required
                 />
@@ -106,8 +106,9 @@ export function AccessPageTemplate({
               </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-white p-3 text-xs text-brand-muted">
-                <p className="font-semibold text-brand-text">Credenciales demo Administrador</p>
-                <p>- administrador.g3 / demo123</p>
+                <p className="font-semibold text-brand-text">Credenciales demo Perfil Usuario</p>
+                <p>- usuario.g3 / demo123</p>
+                <p>- operaciones.g3 / demo123</p>
               </div>
             </form>
 
@@ -121,7 +122,7 @@ export function AccessPageTemplate({
                   id="client-username"
                   value={clientUsername}
                   onChange={(event) => onClientUsernameChange(event.target.value)}
-                  placeholder="cliente.g3"
+                  placeholder="cliente.polar"
                   className={fieldClass}
                   required
                 />
@@ -148,8 +149,8 @@ export function AccessPageTemplate({
 
               <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-xs text-brand-muted">
                 <p className="font-semibold text-brand-text">Credenciales demo Perfil Cliente</p>
-                <p>- cliente.g3 / demo123</p>
-                <p>- cliente.demo / demo123</p>
+                <p>- cliente.polar / demo123</p>
+                <p>- cliente.farmatodo / demo123</p>
               </div>
             </form>
           </div>

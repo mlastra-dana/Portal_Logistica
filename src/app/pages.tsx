@@ -64,13 +64,14 @@ export function AccessPage() {
     const u = userUsername.trim().toLowerCase();
     const p = userPassword.trim();
 
-    const validUserCreds: Record<string, "administrador"> = {
-      "administrador.g3": "administrador",
+    const validUserCreds: Record<string, "usuario"> = {
+      "usuario.g3": "usuario",
+      "operaciones.g3": "usuario",
     };
 
     const matchedRole = validUserCreds[u];
     if (!matchedRole || p !== "demo123") {
-      setUserError("Credenciales invalidas para Perfil Administrador.");
+      setUserError("Credenciales invalidas para Perfil Usuario.");
       return;
     }
 
@@ -85,8 +86,8 @@ export function AccessPage() {
     const p = clientPassword.trim();
 
     const clientCredentials: Record<string, string> = {
-      "cliente.g3": "J-40120001-9",
-      "cliente.demo": "J-40120002-7",
+      "cliente.polar": "J-40120001-9",
+      "cliente.farmatodo": "J-40120002-7",
     };
 
     const docId = clientCredentials[u];

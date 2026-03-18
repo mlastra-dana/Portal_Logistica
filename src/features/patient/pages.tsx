@@ -152,8 +152,9 @@ export function PatientMedicalResultsPage() {
           <>
             <section className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               <Card className="rounded-lg shadow-none">
-                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Cliente</p>
-                <p className="mt-2 text-sm font-semibold text-brand-ink">{client.fullName}</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Informacion de mi cuenta</p>
+                <p className="mt-2 text-sm font-semibold text-brand-ink">{client.nombreCliente || client.fullName}</p>
+                <p className="mt-1 text-xs text-brand-muted">{client.rif || client.documentId}</p>
               </Card>
               <Card className="rounded-lg shadow-none">
                 <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Mis facturas</p>
@@ -168,6 +169,21 @@ export function PatientMedicalResultsPage() {
                 <p className="mt-2 text-sm font-semibold text-brand-ink">{docs.filter((doc) => doc.status === "observado").length} en observacion</p>
               </Card>
             </section>
+
+            <Card className="mt-4 rounded-lg shadow-none">
+              <h2 className="text-base font-semibold">Informacion del cliente</h2>
+              <div className="mt-3 grid gap-2 text-sm md:grid-cols-2">
+                <p><strong>Nombre cliente:</strong> {client.nombreCliente || client.fullName}</p>
+                <p><strong>RIF:</strong> {client.rif || client.documentId}</p>
+                <p><strong>Contacto principal:</strong> {client.contactoPrincipal || client.fullName}</p>
+                <p><strong>Correo:</strong> {client.correo || client.email}</p>
+                <p><strong>Telefono:</strong> {client.telefono || client.phone}</p>
+                <p><strong>Direccion fiscal:</strong> {client.direccionFiscal || client.address}</p>
+                <p><strong>Ciudad / Estado:</strong> {client.ciudad || "N/A"} / {client.estado || "N/A"}</p>
+                <p><strong>Tipo cliente:</strong> {client.tipoCliente || "Corporativo"}</p>
+                <p><strong>Estatus cuenta:</strong> {client.estatusCuenta || "Activa"}</p>
+              </div>
+            </Card>
 
             <Card className="mt-4 rounded-lg shadow-none">
               <div className="grid gap-3 md:grid-cols-[2fr_1fr]">
