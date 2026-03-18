@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GUIA DE FACTURACION 13437-EP</title>
+  <style>
+    :root { --blue:#1f4b93; --accent:#f39a2e; --ink:#1f2937; --muted:#6b7280; --line:#d9e0ea; --soft:#f5f8fc; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #eef2f7; color: var(--ink); }
+    .page { width: 980px; margin: 18px auto; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .head { padding: 18px 24px; background: linear-gradient(120deg, #ffffff 0%, #f7fbff 100%); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .brand h1 { margin: 0; color: var(--blue); font-size: 28px; letter-spacing: .02em; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+    .meta { text-align: right; }
+    .meta .chip { display:inline-block; padding:6px 10px; border:1px solid #d0def5; background:#edf4ff; color:var(--blue); border-radius:999px; font-size:12px; font-weight:700; }
+    .meta h2 { margin: 10px 0 0; font-size: 20px; color: var(--ink); }
+    .meta p { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+    .section { padding: 18px 24px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .box { border:1px solid var(--line); border-radius:8px; background: var(--soft); padding: 10px 12px; }
+    .k { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: .08em; }
+    .v { margin-top: 4px; font-size: 17px; font-weight: 700; color: var(--ink); }
+    .table { width:100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+    .table th, .table td { border:1px solid var(--line); padding: 10px; text-align: left; }
+    .table th { background: #f3f7fd; color: #334155; }
+    .status { font-weight: 700; color: #b45309; }
+    .foot { padding: 14px 24px 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="head">
+      <div class="brand">
+        <h1>G3 LOGISTICA, C.A.</h1>
+        <p>Portal documental corporativo - Seguridad y confianza</p>
+      </div>
+      <div class="meta">
+        <span class="chip">DEMO OPERATIVA</span>
+        <h2>GUIA DE FACTURACION 13437-EP</h2>
+        <p>Codigo interno: G3-DOC004</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="grid">
+        <div class="box"><div class="k">Cliente</div><div class="v">Empresas Polar, C.A.</div></div>
+        <div class="box"><div class="k">Fecha de emision</div><div class="v">2026-03-02</div></div>
+        <div class="box"><div class="k">Origen</div><div class="v">Caracas</div></div>
+        <div class="box"><div class="k">Destino</div><div class="v">Maracay</div></div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Tipo documento</th>
+            <th>Numero</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Servicio logistico corporativo</td>
+            <td>Guia de facturacion</td>
+            <td>13437-EP</td>
+            <td class="status">Pendiente</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="foot">
+      Documento generado para demostracion comercial del Portal G3 Logistica.
+    </footer>
+  </article>
+</body>
+</html>
