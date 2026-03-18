@@ -1,0 +1,11 @@
+<svg width="620" height="190" viewBox="0 0 620 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="620" height="190" fill="none"/>
+  <path d="M63 32L115 32L145 50L145 82L74 82C66 82 59 75 59 67V46C59 38 55 32 63 32Z" fill="#F28F2B"/>
+  <path d="M66 58H116V66H66V58Z" fill="white"/>
+  <path d="M57 88H145V116H83C71 116 57 110 57 98V88Z" fill="#2455A6"/>
+  <path d="M57 120H145V146L111 164L57 146V120Z" fill="#2455A6"/>
+  <path d="M86 97H133V103H86V97Z" fill="white"/>
+  <path d="M86 127H132V133H86V127Z" fill="white"/>
+  <text x="166" y="94" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="800" fill="#2455A6">LOGÍSTICA</text>
+  <text x="166" y="138" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="500" fill="#2455A6">Seguridad y confianza</text>
+</svg>

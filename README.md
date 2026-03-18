@@ -1,79 +1,33 @@
-# DANAconnect Multiempresa - Portal de Documentos
+# Portal G3 Logistica
 
-Plataforma demo multiempresa para visualizacion, descarga y comparticion de documentos
-por industria (Laboratorio/Perfilab, Universidad, RRHH, Aseguradora).
+Demo frontend en React + Vite + TypeScript + Tailwind para gestion documental logistica.
 
-## Enfoque del producto (demo multiindustria)
+El portal esta orientado a dos perfiles:
 
-Este repositorio implementa un selector multiempresa y flujos demo por industria.
-El flujo de Laboratorio reutiliza el portal Perfilab existente sin modificar datos.
+- `Perfil Usuario`: vista operativa con acceso global
+- `Perfil Cliente`: vista simplificada con acceso a sus propios documentos
 
-Incluye:
+Documentos soportados en el demo:
 
-- Landing multiempresa con selector de industria
-- Acceso por identificador (cedula / poliza segun industria)
-- Administrador de documentos (lista, preview, descargar, compartir)
-- Laboratorio (Perfilab): resultados medicos, ordenes, examenes y documentos clinicos
-- Universidad: notas, constancias, pagos (mock)
-- RRHH: recibos, contratos, constancias (mock)
-- Aseguradora: polizas, cartas aval, reembolsos, anexos (mock)
-- Compartir por enlace temporal mock (`/r/:token`)
-- Panel demo para admin/staff: pacientes, carga de resultados, auditoria
+- Facturas
+- Guias de movilizacion
 
-No incluye:
+## Alcance
 
-- Citas
-- Facturacion/pagos
-- Seguridad avanzada visible (2FA/politicas avanzadas)
+- Frontend only (sin backend productivo)
+- Datos mock para presentacion
+- Navegacion y estados de perfil simulados
+- Compatible con despliegue estatico en AWS Amplify
 
-## Modo demostracion (sin autenticacion real)
+## Rutas principales
 
-- No hay login obligatorio.
-- `RoleSwitch` visible en layout autenticado.
-- Rol persistido en `localStorage`.
-- Restriccion visual de rutas:
-  - `patient` no accede a `/admin/*`
-  - `staff` y `admin` acceden a admin
-- Banner global: `Modo demostración`.
-
-## Rutas
-
-### Publicas
-
-- `/` landing multiempresa
-- `/multi` landing multiempresa (alias)
-- `/r/:token` enlace temporal mock
-- `/login` redireccion a `/results/overview` (compatibilidad)
-
-### Acceso multiempresa
-
-- `/access/:industry` acceso por industria (universidad/rrhh/aseguradora)
-- `/documents/:industry` document manager por industria
-- Laboratorio: `/access` y rutas Perfilab existentes
-
-### Perfilab (Laboratorio)
-
-- `/results/overview` Resumen
-- `/results/labs` Mis Resultados Medicos
-- `/results/orders` Ordenes y Examenes
-- `/results/clinical-docs` Documentos Clinicos
-- `/results/share` Compartir Resultados
-
-### Admin demo
-
-- `/admin/patients`
-- `/admin/uploads`
-- `/admin/audit`
-
-## Auditoria mock
-
-Se registran eventos:
-
-- `role_changed`
-- `page_view`
-- `document_view`
-- `download_clicked`
-- `upload`
+- `/` landing del portal
+- `/access` acceso con seleccion de perfil
+- `/portal/cliente` dashboard de cliente
+- `/portal/usuario/dashboard` resumen operativo
+- `/portal/usuario/documentos` consulta global
+- `/portal/usuario/actividad` bitacora demo
+- `/r/:token` acceso temporal mock
 
 ## Desarrollo
 
@@ -83,22 +37,8 @@ npm run dev
 npm run build
 ```
 
-## Estructura clave
+## Notas
 
-- `src/features/multi/pages.tsx` (landing + accesos + documentos multiempresa)
-- `src/features/patient/pages.tsx` (Perfilab)
-- `src/features/admin/pages.tsx`
-- `src/components/layout/PublicLayout.tsx`
-- `src/components/layout/AuthedLayout.tsx`
-- `src/components/layout/RoleSwitch.tsx`
-- `src/features/demo/useDemoRoleStore.ts`
-- `src/features/demo/useCompanySession.ts`
-- `src/services/mock/tokenValidator.ts`
-- `src/styles/tokens.css`
-
-## Futuro: activacion de auth real
-
-1. Reintroducir autenticacion Cognito.
-2. Mapear claims de grupos a roles.
-3. Enforzar RBAC en backend (API/Lambda).
-4. Reemplazar token mock por enlaces firmados con expiracion real.
+- El cambio de perfil se maneja en estado local (`zustand` persistente).
+- No hay integracion real de autenticacion, API ni WhatsApp.
+- La carga de documentos se mantiene en modo demostracion con persistencia mock.

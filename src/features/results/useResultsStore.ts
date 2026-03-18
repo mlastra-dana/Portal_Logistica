@@ -24,7 +24,7 @@ export const useResultsStore = create<ResultsState>((set, get) => ({
   markAsViewed: (id) =>
     set((state) => ({
       documents: state.documents.map((doc) =>
-        doc.id === id ? { ...doc, status: "visto" } : doc,
+        doc.id === id ? { ...doc, status: "consultado" } : doc,
       ),
     })),
   getDocumentsForPatient: (patientId, filters) => {
@@ -35,12 +35,7 @@ export const useResultsStore = create<ResultsState>((set, get) => ({
     const to = filters?.to || "";
     const documentId = (filters?.documentId || "").trim().toUpperCase();
 
-    const resolveService = (category: ResultDocument["category"], explicit?: string) => {
-      if (explicit) return explicit;
-      if (category === "Laboratorio") return "Laboratorio";
-      if (category === "Rayos X" || category === "Mamografias") return "Imagenología";
-      return category;
-    };
+    const resolveService = (category: ResultDocument["category"], explicit?: string) => explicit || category;
 
     return get()
       .documents
@@ -49,10 +44,11 @@ export const useResultsStore = create<ResultsState>((set, get) => ({
         const date = (doc.date || doc.studyDate || "").slice(0, 10);
         const title = (doc.title || doc.studyName || "").toLowerCase();
         const fileName = (doc.fileName || "").toLowerCase();
+        const numberRef = `${doc.numeroFactura || ""} ${doc.numeroGuia || ""}`.toLowerCase();
         const docType = doc.type || doc.fileType;
         const docService = resolveService(doc.category, doc.service);
 
-        if (query && !title.includes(query) && !fileName.includes(query)) return false;
+        if (query && !title.includes(query) && !fileName.includes(query) && !numberRef.includes(query)) return false;
         if (type !== "all" && docType !== type) return false;
         if (service !== "all" && docService !== service) return false;
         if (from && date < from) return false;

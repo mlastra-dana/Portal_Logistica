@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { BrandMark } from "@/components/BrandMark";
 import { RoleSwitch } from "@/components/layout/RoleSwitch";
 import { Button } from "@/components/ui/Button";
 import { useAuditStore } from "@/features/audit/useAuditStore";
@@ -27,7 +28,7 @@ export function AuthedLayout({ title, items, children }: Props) {
       <div className="md:flex">
         <aside className="w-full border-r border-brand-ink/20 bg-brand-ink p-4 text-white md:flex md:min-h-screen md:w-64 md:flex-col">
           <Link to="/access" className="mb-4 flex items-center gap-2">
-            <img src="/brand/perfilab/logo.png" alt="Perfilab" className="h-8 w-auto max-w-[170px] object-contain" />
+            <BrandMark compact className="h-9 brightness-0 invert" />
           </Link>
           <nav className="no-scrollbar flex gap-2 overflow-x-auto md:block md:space-y-1">
             {items.map((item) => (
@@ -49,9 +50,9 @@ export function AuthedLayout({ title, items, children }: Props) {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="min-w-0">
                 <div className="mb-1 flex items-center gap-3">
-                  <img src="/brand/perfilab/logo.png" alt="Perfilab" className="h-8 w-auto max-w-[190px] object-contain" />
+                  <BrandMark compact />
                 </div>
-                <p className="text-xs text-brand-muted">Portal de resultados y documentos / {location.pathname}</p>
+                <p className="text-xs text-brand-muted">Portal G3 Logistica / {location.pathname}</p>
                 <p className="text-sm font-medium">{title}</p>
               </div>
               <div className="flex items-center gap-2">

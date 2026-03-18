@@ -1,7 +1,9 @@
-export type Role = "admin" | "staff" | "patient";
+export type Role = "administrador" | "cliente";
 
-export type ResultCategory = "Laboratorio" | "Rayos X" | "Mamografias";
-export type ResultStatus = "nuevo" | "visto";
+export type ResultCategory = "Factura" | "GuiaMovilizacion";
+export type ResultStatus = "nuevo" | "consultado" | "aprobado" | "observado";
+
+export type LogisticsDocumentType = "factura" | "guia";
 
 export type ResultDocument = {
   id: string;
@@ -24,6 +26,14 @@ export type ResultDocument = {
   thumbnailUrl?: string;
   createdAt: string;
   tags?: string[];
+  documentType: LogisticsDocumentType;
+  tipoDocumento: "Factura" | "Guia de movilizacion";
+  numeroFactura?: string;
+  numeroGuia?: string;
+  cliente: string;
+  fechaEmision: string;
+  origen?: string;
+  destino?: string;
 };
 
 export type Patient = {

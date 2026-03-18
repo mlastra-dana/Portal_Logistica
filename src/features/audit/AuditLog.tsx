@@ -6,7 +6,7 @@ export function AuditLog() {
 
   return (
     <Card id="audit">
-      <h3 className="mb-3 text-base font-semibold">Auditoria (UI mock)</h3>
+      <h3 className="mb-3 text-base font-semibold">Bitacora operativa</h3>
       <div className="space-y-2 text-sm">
         {events.map((event) => (
           <div key={event.id} className="rounded-lg border bg-brand-muted/40 p-3">

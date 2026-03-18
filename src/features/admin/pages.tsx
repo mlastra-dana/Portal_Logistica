@@ -1,55 +1,107 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { AuthedLayout } from "@/components/layout/AuthedLayout";
 import { RestrictedAccess } from "@/components/layout/RestrictedAccess";
-import { Alert } from "@/components/ui/Alert";
-import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { ResponsiveTable } from "@/components/ui/ResponsiveTable";
 import { AuditLog } from "@/features/audit/AuditLog";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
-import { UploadForm } from "@/features/documents/UploadForm";
-import { mockPatients } from "@/mocks/patients";
+import { useResultsStore } from "@/features/results/useResultsStore";
 
 const adminNav = [
-  { to: "/admin/patients", label: "Pacientes" },
-  { to: "/admin/uploads", label: "Carga de documentos" },
-  { to: "/admin/audit", label: "Auditoria" },
+  { to: "/portal/usuario/dashboard", label: "Resumen operativo" },
+  { to: "/portal/usuario/documentos", label: "Documentos" },
+  { to: "/portal/usuario/actividad", label: "Actividad" },
 ];
 
 function AdminGuard({ children }: { children: ReactNode }) {
   const role = useDemoRoleStore((s) => s.role);
 
-  if (role === "patient") {
-    return <RestrictedAccess message="Tu rol actual es patient. Esta area es para staff o admin." />;
+  if (role !== "administrador") {
+    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Administrador G3." />;
   }
 
   return <>{children}</>;
 }
 
+function statusTone(status: string): "warning" | "success" | "bad" {
+  if (status === "nuevo") return "warning";
+  if (status === "observado") return "bad";
+  return "success";
+}
+
 export function AdminPatientsPage() {
   const [query, setQuery] = useState("");
-  const rows = mockPatients.filter((p) => `${p.fullName} ${p.documentId}`.toLowerCase().includes(query.toLowerCase()));
+  const documents = useResultsStore((s) => s.documents);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return documents;
+    return documents.filter((doc) => {
+      const haystack = `${doc.cliente} ${doc.numeroFactura || ""} ${doc.numeroGuia || ""} ${doc.tipoDocumento}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [documents, query]);
+
+  const totalFacturas = documents.filter((doc) => doc.documentType === "factura").length;
+  const totalGuias = documents.filter((doc) => doc.documentType === "guia").length;
+  const totalObservados = documents.filter((doc) => doc.status === "observado").length;
+  const totalNuevos = documents.filter((doc) => doc.status === "nuevo").length;
 
   return (
-    <AuthedLayout title="Admin · Pacientes" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Resumen operativo" items={adminNav}>
       <AdminGuard>
-        <Card>
-          <Label htmlFor="search-patient">Buscar paciente</Label>
-          <Input id="search-patient" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Nombre o documento" />
+        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <Card className="rounded-lg shadow-none">
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de facturas</p>
+            <p className="mt-2 text-3xl font-black text-brand-ink">{totalFacturas}</p>
+          </Card>
+          <Card className="rounded-lg shadow-none">
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de guias</p>
+            <p className="mt-2 text-3xl font-black text-brand-ink">{totalGuias}</p>
+          </Card>
+          <Card className="rounded-lg shadow-none">
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Documentos nuevos</p>
+            <p className="mt-2 text-3xl font-black text-brand-ink">{totalNuevos}</p>
+          </Card>
+          <Card className="rounded-lg shadow-none">
+            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">En observacion</p>
+            <p className="mt-2 text-3xl font-black text-brand-ink">{totalObservados}</p>
+          </Card>
+        </section>
+
+        <Card className="mt-3 rounded-lg shadow-none">
+          <Label htmlFor="search-docs">Consulta de documentos</Label>
+          <Input
+            id="search-docs"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar por cliente, numero de factura o numero de guia"
+          />
         </Card>
 
         <div className="mt-3">
           <ResponsiveTable
-            data={rows}
-            mobileTitle={(row) => row.fullName}
+            data={filtered.slice(0, 8)}
+            mobileTitle={(row) => row.cliente}
             columns={[
-              { key: "name", header: "Nombre", render: (row) => row.fullName },
-              { key: "document", header: "Documento", render: (row) => row.documentId },
-              { key: "history", header: "Historia", render: (row) => row.historyNumber },
-              { key: "email", header: "Correo", render: (row) => row.email },
-              { key: "insurer", header: "Aseguradora", render: (row) => `${row.insurer} / ${row.plan}` },
+              { key: "tipo", header: "Tipo de documento", render: (row) => row.tipoDocumento },
+              { key: "numero", header: "Numero", render: (row) => row.numeroFactura || row.numeroGuia || "N/A" },
+              { key: "cliente", header: "Cliente", render: (row) => row.cliente },
+              { key: "fecha", header: "Fecha", render: (row) => row.fechaEmision },
+              { key: "origen", header: "Origen", render: (row) => row.origen || "N/A" },
+              { key: "destino", header: "Destino", render: (row) => row.destino || "N/A" },
+              {
+                key: "estado",
+                header: "Estado",
+                render: (row) => (
+                  <Badge tone={statusTone(row.status)} className="rounded-md uppercase tracking-[0.08em]">
+                    {row.status}
+                  </Badge>
+                ),
+              },
             ]}
           />
         </div>
@@ -59,42 +111,53 @@ export function AdminPatientsPage() {
 }
 
 export function AdminUploadsPage() {
-  const role = useDemoRoleStore((s) => s.role);
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(mockPatients[0]?.id || "");
-  const rows = mockPatients.filter((p) => `${p.fullName} ${p.documentId}`.toLowerCase().includes(query.toLowerCase()));
-  const selected = rows.find((row) => row.id === selectedId);
+  const documents = useResultsStore((s) => s.documents);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return documents;
+    return documents.filter((doc) => {
+      const haystack = `${doc.cliente} ${doc.numeroFactura || ""} ${doc.numeroGuia || ""} ${doc.origen || ""} ${doc.destino || ""}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [documents, query]);
 
   return (
-    <AuthedLayout title="Admin · Carga de documentos" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Documentos" items={adminNav}>
       <AdminGuard>
-        <Alert>Sube documentos con metadatos. Persistencia real pendiente (modo demostración).</Alert>
-
-        <Card className="mt-3">
-          <Label htmlFor="search-upload">Buscar paciente</Label>
-          <Input id="search-upload" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Nombre o documento" />
+        <Card className="rounded-lg shadow-none">
+          <Label htmlFor="search-operativo">Buscar en facturas y guias de movilizacion</Label>
+          <Input
+            id="search-operativo"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Cliente, numero de documento, origen o destino"
+          />
         </Card>
 
-        <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_1fr]">
+        <div className="mt-3">
           <ResponsiveTable
-            data={rows}
-            mobileTitle={(row) => row.fullName}
+            data={filtered}
+            mobileTitle={(row) => `${row.tipoDocumento} ${row.numeroFactura || row.numeroGuia || ""}`}
             columns={[
-              { key: "name", header: "Nombre", render: (row) => row.fullName },
-              { key: "document", header: "Documento", render: (row) => row.documentId },
-              { key: "site", header: "Sede", render: (row) => row.site },
+              { key: "tipo", header: "Tipo", render: (row) => row.tipoDocumento },
+              { key: "numero", header: "Numero", render: (row) => row.numeroFactura || row.numeroGuia || "N/A" },
+              { key: "cliente", header: "Cliente", render: (row) => row.cliente },
+              { key: "fecha", header: "Fecha", render: (row) => row.fechaEmision },
+              { key: "origen", header: "Origen", render: (row) => row.origen || "N/A" },
+              { key: "destino", header: "Destino", render: (row) => row.destino || "N/A" },
               {
-                key: "action",
-                header: "Accion",
+                key: "estado",
+                header: "Estado del documento",
                 render: (row) => (
-                  <Button variant={selectedId === row.id ? "dark" : "ghost"} onClick={() => setSelectedId(row.id)}>
-                    Seleccionar
-                  </Button>
+                  <Badge tone={statusTone(row.status)} className="rounded-md uppercase tracking-[0.08em]">
+                    {row.status}
+                  </Badge>
                 ),
               },
             ]}
           />
-          <UploadForm patient={selected} actor={`${role}@demo.local`} />
         </div>
       </AdminGuard>
     </AuthedLayout>
@@ -103,11 +166,11 @@ export function AdminUploadsPage() {
 
 export function AdminAuditPage() {
   return (
-    <AuthedLayout title="Admin · Auditoria" items={adminNav}>
+    <AuthedLayout title="Perfil Administrador · Actividad" items={adminNav}>
       <AdminGuard>
-        <Card>
-          <h2 className="text-base font-semibold">Trazabilidad de documentos</h2>
-          <p className="mt-2 text-sm text-brand-muted">Eventos demo: role_changed, page_view, document_view, download_clicked.</p>
+        <Card className="rounded-lg shadow-none">
+          <h2 className="text-base font-semibold">Estado de documentos</h2>
+          <p className="mt-2 text-sm text-brand-muted">Registro de actividad de consulta, descargas y cambios de perfil en modo demostracion.</p>
         </Card>
         <div className="mt-3">
           <AuditLog />

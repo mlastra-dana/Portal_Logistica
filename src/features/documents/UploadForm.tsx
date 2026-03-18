@@ -14,10 +14,10 @@ type Props = {
   actor: string;
 };
 
-const categories: ResultCategory[] = ["Laboratorio", "Rayos X", "Mamografias"];
+const categories: ResultCategory[] = ["Factura", "GuiaMovilizacion"];
 
 export function UploadForm({ patient, actor }: Props) {
-  const [category, setCategory] = useState<ResultCategory>("Laboratorio");
+  const [category, setCategory] = useState<ResultCategory>("Factura");
   const [studyName, setStudyName] = useState("");
   const [studyDate, setStudyDate] = useState("");
   const [site, setSite] = useState(patient?.site || "");
@@ -30,9 +30,12 @@ export function UploadForm({ patient, actor }: Props) {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!patient || !file || !studyName || !studyDate) {
-      setStatus("Completa paciente, estudio, fecha y archivo.");
+      setStatus("Completa cliente, documento, fecha y archivo.");
       return;
     }
+
+    const isFactura = category === "Factura";
+    const serial = `AUTO-${Date.now().toString().slice(-6)}`;
 
     const newDoc = await uploadDocument({
       file,
@@ -49,14 +52,22 @@ export function UploadForm({ patient, actor }: Props) {
           .split(",")
           .map((tag) => tag.trim())
           .filter(Boolean),
+        documentType: isFactura ? "factura" : "guia",
+        tipoDocumento: isFactura ? "Factura" : "Guia de movilizacion",
+        numeroFactura: isFactura ? `FT-${serial}` : undefined,
+        numeroGuia: isFactura ? undefined : `GM-${serial}`,
+        cliente: patient.fullName,
+        fechaEmision: studyDate,
+        origen: site || patient.site,
+        destino: "Pendiente de asignacion",
       },
     });
 
     addDocument(newDoc);
     await saveDocumentMetadata(newDoc);
-    addAudit("upload", actor, `Documento subido: ${newDoc.studyName}`);
+    addAudit("upload", actor, `Documento logistico cargado: ${newDoc.studyName}`);
 
-    setStatus("Documento cargado y metadata guardada (modo prototipo).");
+    setStatus("Documento cargado y metadata guardada (modo demostracion).");
     setStudyName("");
     setStudyDate("");
     setTags("");
@@ -65,7 +76,7 @@ export function UploadForm({ patient, actor }: Props) {
 
   return (
     <Card>
-      <h3 className="mb-2 text-base font-semibold">Cargar resultado</h3>
+      <h3 className="mb-2 text-base font-semibold">Cargar documento logistico</h3>
       <p className="mb-4 text-xs text-slate-500">{getStorageStatusMessage()}</p>
 
       <form className="space-y-3" onSubmit={onSubmit}>
@@ -78,23 +89,23 @@ export function UploadForm({ patient, actor }: Props) {
           >
             {categories.map((option) => (
               <option key={option} value={option}>
-                {option === "Laboratorio" ? "Servicios médicos" : option}
+                {option === "Factura" ? "Factura" : "Guia de movilizacion"}
               </option>
             ))}
           </select>
         </label>
 
         <label className="text-sm">
-          Nombre amigable / estudio
+          Nombre del documento
           <Input
-            placeholder="Ej. Placa de torax"
+            placeholder="Ej. Factura de despacho febrero"
             value={studyName}
             onChange={(e) => setStudyName(e.target.value)}
           />
         </label>
 
         <label className="text-sm">
-          Fecha del estudio
+          Fecha de emision
           <Input type="date" value={studyDate} onChange={(e) => setStudyDate(e.target.value)} />
         </label>
 
@@ -104,8 +115,8 @@ export function UploadForm({ patient, actor }: Props) {
         </label>
 
         <label className="text-sm">
-          Tags opcionales
-          <Input placeholder="sangre, control anual" value={tags} onChange={(e) => setTags(e.target.value)} />
+          Etiquetas opcionales
+          <Input placeholder="facturacion, despacho nacional" value={tags} onChange={(e) => setTags(e.target.value)} />
         </label>
 
         <label className="text-sm">

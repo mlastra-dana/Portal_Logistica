@@ -4,7 +4,7 @@ import { Role } from "@/app/types";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 
 export type DemoPatientSession = {
-  role: "patient";
+  role: "cliente";
   patientId: string;
   documentId: string;
   startedAt: string;
@@ -27,7 +27,7 @@ type DemoRoleState = {
 export const useDemoRoleStore = create<DemoRoleState>()(
   persist(
     (set, get) => ({
-      role: "patient",
+      role: "cliente",
       rolePickerOpen: false,
       tokenAccessBanner: null,
       patientSession: null,
@@ -36,7 +36,7 @@ export const useDemoRoleStore = create<DemoRoleState>()(
         set({ role, rolePickerOpen: false });
         useAuditStore
           .getState()
-          .addEvent("role_changed", "demo-user", `Role cambiado de ${prev} a ${role}`);
+          .addEvent("role_changed", "demo-user", `Perfil cambiado de ${prev} a ${role}`);
       },
       openRolePicker: () => set({ rolePickerOpen: true }),
       closeRolePicker: () => set({ rolePickerOpen: false }),
@@ -44,36 +44,36 @@ export const useDemoRoleStore = create<DemoRoleState>()(
       setPatientSession: (session) => {
         const prevRole = get().role;
         if (typeof window !== "undefined") {
-          window.localStorage.setItem("perfilab-demo-session", JSON.stringify(session));
+          window.localStorage.setItem("g3-logistica-demo-session", JSON.stringify(session));
         }
-        set({ role: "patient", patientSession: session, rolePickerOpen: false });
+        set({ role: "cliente", patientSession: session, rolePickerOpen: false });
         useAuditStore
           .getState()
-          .addEvent("role_changed", "demo-user", `Role cambiado de ${prevRole} a patient`);
+          .addEvent("role_changed", "demo-user", `Perfil cambiado de ${prevRole} a cliente`);
       },
       clearPatientSession: () => {
         if (typeof window !== "undefined") {
-          window.localStorage.removeItem("perfilab-demo-session");
+          window.localStorage.removeItem("g3-logistica-demo-session");
         }
         set({ patientSession: null, rolePickerOpen: false });
-        useAuditStore.getState().addEvent("role_changed", "demo-user", "Sesion demo por documento finalizada");
+        useAuditStore.getState().addEvent("role_changed", "demo-user", "Sesion de cliente finalizada");
       },
       resetCompanySession: () => {
         if (typeof window !== "undefined") {
-          window.localStorage.removeItem("perfilab-demo-session");
+          window.localStorage.removeItem("g3-logistica-demo-session");
           window.localStorage.removeItem("demo_shared_docs");
           window.localStorage.removeItem("selected-industry");
           window.localStorage.removeItem("multi-industry-session");
         }
         set({
-          role: "patient",
+          role: "cliente",
           patientSession: null,
           tokenAccessBanner: null,
           rolePickerOpen: false,
         });
-        useAuditStore.getState().addEvent("role_changed", "demo-user", "Cambio de empresa / salida de sesion");
+        useAuditStore.getState().addEvent("role_changed", "demo-user", "Salida del portal G3");
       },
     }),
-    { name: "perfilab-demo-role" },
+    { name: "g3-logistica-demo-role" },
   ),
 );

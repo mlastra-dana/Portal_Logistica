@@ -1,7 +1,7 @@
 const validTokens: Record<string, { expiresAt: string }> = {
   "demo-valid-001": { expiresAt: "2026-12-31T23:59:59Z" },
   "demo-valid-002": { expiresAt: "2026-03-30T23:59:59Z" },
-  "lab-temporal-123": { expiresAt: "2026-03-10T23:59:59Z" },
+  "g3-temporal-123": { expiresAt: "2026-03-31T23:59:59Z" },
 };
 
 export function validateDemoToken(token: string) {
