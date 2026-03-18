@@ -55,7 +55,7 @@ export function AccessPage() {
   const [userUsername, setUserUsername] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userError, setUserError] = useState("");
-  const [clientUsername, setClientUsername] = useState("");
+  const [clientRif, setClientRif] = useState("");
   const [clientPassword, setClientPassword] = useState("");
   const [clientError, setClientError] = useState("");
 
@@ -82,21 +82,17 @@ export function AccessPage() {
 
   const onClientSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const u = clientUsername.trim().toLowerCase();
+    const rif = clientRif.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
     const p = clientPassword.trim();
 
-    const clientCredentials: Record<string, string> = {
-      "cliente.polar": "J-40120001-9",
-      "cliente.farmatodo": "J-40120002-7",
-    };
-
-    const docId = clientCredentials[u];
-    if (!docId || p !== "demo123") {
+    if (!rif || p !== "demo123") {
       setClientError("Credenciales invalidas para Perfil Cliente.");
       return;
     }
 
-    const patient = mockPatients.find((item) => item.documentId.toUpperCase() === docId.toUpperCase());
+    const patient = mockPatients.find((item) =>
+      item.documentId.toUpperCase().replace(/[^A-Z0-9]/g, "") === rif,
+    );
     if (!patient) {
       setClientError("No se pudo abrir la sesion del cliente.");
       return;
@@ -120,9 +116,9 @@ export function AccessPage() {
       onUserPasswordChange={setUserPassword}
       onUserSubmit={onUserSubmit}
       userError={userError}
-      clientUsername={clientUsername}
+      clientRif={clientRif}
       clientPassword={clientPassword}
-      onClientUsernameChange={setClientUsername}
+      onClientRifChange={setClientRif}
       onClientPasswordChange={setClientPassword}
       onClientSubmit={onClientSubmit}
       clientError={clientError}

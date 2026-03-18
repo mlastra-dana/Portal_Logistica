@@ -1,4 +1,4 @@
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import { Link } from "react-router-dom";
 import { BrandMark } from "@/components/BrandMark";
 import { Alert } from "@/components/ui/Alert";
@@ -15,9 +15,9 @@ type Props = {
   onUserPasswordChange: (value: string) => void;
   onUserSubmit: FormEventHandler<HTMLFormElement>;
   userError?: string;
-  clientUsername: string;
+  clientRif: string;
   clientPassword: string;
-  onClientUsernameChange: (value: string) => void;
+  onClientRifChange: (value: string) => void;
   onClientPasswordChange: (value: string) => void;
   onClientSubmit: FormEventHandler<HTMLFormElement>;
   clientError?: string;
@@ -34,14 +34,32 @@ export function AccessPageTemplate({
   onUserPasswordChange,
   onUserSubmit,
   userError,
-  clientUsername,
+  clientRif,
   clientPassword,
-  onClientUsernameChange,
+  onClientRifChange,
   onClientPasswordChange,
   onClientSubmit,
   clientError,
 }: Props) {
   const { exitToSelector } = useCompanySession();
+  const [showUserPassword, setShowUserPassword] = useState(false);
+  const [showClientPassword, setShowClientPassword] = useState(false);
+
+  const eyeIcon = (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+
+  const eyeOffIcon = (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6A3 3 0 0 0 12 15a3 3 0 0 0 2.4-4.4" />
+      <path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a21.4 21.4 0 0 1-5.1 5.8" />
+      <path d="M6.6 6.6A21.1 21.1 0 0 0 1 12s4 7 11 7c1.4 0 2.7-.3 3.9-.8" />
+    </svg>
+  );
 
   return (
     <div className="min-h-screen bg-brand-surface text-brand-text">
@@ -88,21 +106,31 @@ export function AccessPageTemplate({
 
               <div className="mt-3">
                 <Label htmlFor="user-password">Clave</Label>
-                <Input
-                  id="user-password"
-                  type="password"
-                  value={userPassword}
-                  onChange={(event) => onUserPasswordChange(event.target.value)}
-                  placeholder="********"
-                  className={fieldClass}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    id="user-password"
+                    type={showUserPassword ? "text" : "password"}
+                    value={userPassword}
+                    onChange={(event) => onUserPasswordChange(event.target.value)}
+                    placeholder="********"
+                    className={`${fieldClass} pr-12`}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 my-auto text-brand-muted hover:text-brand-ink"
+                    onClick={() => setShowUserPassword((v) => !v)}
+                    aria-label={showUserPassword ? "Ocultar clave" : "Mostrar clave"}
+                  >
+                    {showUserPassword ? eyeOffIcon : eyeIcon}
+                  </button>
+                </div>
               </div>
 
               {userError ? <Alert variant="warn" className="mt-3">{userError}</Alert> : null}
 
               <Button type="submit" className={`mt-3 w-full ${actionButton}`}>
-                Entrar a Portal Interno
+                Entrar
               </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-white p-3 text-xs text-brand-muted">
@@ -117,12 +145,12 @@ export function AccessPageTemplate({
               <p className="mt-2 text-sm text-brand-muted">Consulta documentos de cliente.</p>
 
               <div className="mt-3">
-                <Label htmlFor="client-username">Usuario</Label>
+                <Label htmlFor="client-rif">RIF</Label>
                 <Input
-                  id="client-username"
-                  value={clientUsername}
-                  onChange={(event) => onClientUsernameChange(event.target.value)}
-                  placeholder="cliente.polar"
+                  id="client-rif"
+                  value={clientRif}
+                  onChange={(event) => onClientRifChange(event.target.value)}
+                  placeholder="Ej. J401200019"
                   className={fieldClass}
                   required
                 />
@@ -130,27 +158,37 @@ export function AccessPageTemplate({
 
               <div className="mt-3">
                 <Label htmlFor="client-password">Clave</Label>
-                <Input
-                  id="client-password"
-                  type="password"
-                  value={clientPassword}
-                  onChange={(event) => onClientPasswordChange(event.target.value)}
-                  placeholder="********"
-                  className={fieldClass}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    id="client-password"
+                    type={showClientPassword ? "text" : "password"}
+                    value={clientPassword}
+                    onChange={(event) => onClientPasswordChange(event.target.value)}
+                    placeholder="********"
+                    className={`${fieldClass} pr-12`}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 my-auto text-brand-muted hover:text-brand-ink"
+                    onClick={() => setShowClientPassword((v) => !v)}
+                    aria-label={showClientPassword ? "Ocultar clave" : "Mostrar clave"}
+                  >
+                    {showClientPassword ? eyeOffIcon : eyeIcon}
+                  </button>
+                </div>
               </div>
 
               {clientError ? <Alert variant="warn" className="mt-3">{clientError}</Alert> : null}
 
               <Button type="submit" className={`mt-3 w-full ${actionButton}`}>
-                Entrar como Perfil Cliente
+                Entrar
               </Button>
 
               <div className="mt-4 rounded-md border border-brand-border bg-brand-surface p-3 text-xs text-brand-muted">
-                <p className="font-semibold text-brand-text">Credenciales demo Perfil Cliente</p>
-                <p>- cliente.polar / demo123</p>
-                <p>- cliente.farmatodo / demo123</p>
+                <p className="font-semibold text-brand-text">Acceso demo Perfil Cliente (RIF + clave)</p>
+                <p>- J401200019 / demo123</p>
+                <p>- J401200027 / demo123</p>
               </div>
             </form>
           </div>
