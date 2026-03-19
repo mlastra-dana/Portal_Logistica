@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/Label";
 import {
   DashboardStatCard,
   DispatchTable,
+  DispatchEvidencePanel,
+  DispatchLocationPanel,
   DownloadIcon,
   DispatchSummaryCard,
   EyeIcon,
@@ -121,6 +123,8 @@ function DispatchDetailModal({
               </div>
             )}
           />
+          <DispatchLocationPanel dispatch={dispatch} />
+          <DispatchEvidencePanel dispatch={dispatch} />
         </div>
       </Card>
     </div>

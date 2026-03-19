@@ -2,7 +2,13 @@ import { ReactNode } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/components/ui/cn";
-import { DispatchRecord, DispatchStatus, DISPATCH_STATUS_FLOW, dispatchStatusLabel } from "@/features/dispatches/model";
+import {
+  DispatchEvidence,
+  DispatchRecord,
+  DispatchStatus,
+  DISPATCH_STATUS_FLOW,
+  dispatchStatusLabel,
+} from "@/features/dispatches/model";
 
 const statusStyles: Record<DispatchStatus, { dot: string; chip: string }> = {
   en_almacen: {
@@ -142,8 +148,56 @@ export function DispatchSummaryCard({ dispatch, actions }: SummaryProps) {
         <InfoCell label="Guía asociada" value={dispatch.guiaAsociada} />
       </div>
 
+      <div className="mt-4 rounded-lg border border-brand-border bg-white px-3 py-2">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-muted">Ubicación actual</p>
+        <p className="mt-1 text-sm font-semibold text-brand-text">{dispatch.ubicacion.direccion}</p>
+      </div>
+
       <DispatchTimeline status={dispatch.estatus} className="mt-4" />
       {actions ? <div className="mt-4 flex flex-wrap gap-2">{actions}</div> : null}
+    </Card>
+  );
+}
+
+type LocationPanelProps = {
+  dispatch: DispatchRecord;
+  className?: string;
+};
+
+export function DispatchLocationPanel({ dispatch, className }: LocationPanelProps) {
+  const mapUrl = `https://www.google.com/maps?q=${dispatch.ubicacion.lat},${dispatch.ubicacion.lng}`;
+  return (
+    <Card className={cn("rounded-xl border-brand-border bg-white shadow-none", className)}>
+      <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-brand-muted">Ubicación del despacho</h3>
+      <p className="mt-2 text-base font-semibold text-brand-ink">{dispatch.ubicacion.direccion}</p>
+      <p className="mt-1 text-sm text-brand-muted">
+        Lat: {dispatch.ubicacion.lat} · Lng: {dispatch.ubicacion.lng}
+      </p>
+      <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block">
+        <Button className="rounded-md">Ver en mapa</Button>
+      </a>
+    </Card>
+  );
+}
+
+type EvidencePanelProps = {
+  dispatch: DispatchRecord;
+  className?: string;
+};
+
+export function DispatchEvidencePanel({ dispatch, className }: EvidencePanelProps) {
+  return (
+    <Card className={cn("rounded-xl border-brand-border bg-white shadow-none", className)}>
+      <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-brand-muted">Evidencia del despacho</h3>
+      {dispatch.evidencias.length === 0 ? (
+        <p className="mt-2 text-sm text-brand-muted">Sin evidencia visual registrada en la etapa actual.</p>
+      ) : (
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          {dispatch.evidencias.map((item) => (
+            <EvidenceCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
     </Card>
   );
 }
@@ -194,6 +248,20 @@ function InfoCell({ label, value }: { label: string; value: string }) {
       <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-muted">{label}</p>
       <p className="mt-1 text-sm font-semibold text-brand-text">{value}</p>
     </div>
+  );
+}
+
+function EvidenceCard({ item }: { item: DispatchEvidence }) {
+  return (
+    <article className="overflow-hidden rounded-lg border border-brand-border bg-brand-surface/40">
+      <div className="h-32 w-full overflow-hidden bg-brand-surface">
+        <img src={item.imageUrl} alt={`Evidencia ${dispatchStatusLabel(item.etapa)}`} className="h-full w-full object-cover" />
+      </div>
+      <div className="p-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-muted">{dispatchStatusLabel(item.etapa)}</p>
+        <p className="mt-1 text-sm text-brand-text">{item.descripcion}</p>
+      </div>
+    </article>
   );
 }
 

@@ -11,6 +11,8 @@ import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
 import {
   DashboardStatCard,
   DownloadIcon,
+  DispatchEvidencePanel,
+  DispatchLocationPanel,
   DispatchTable,
   DispatchSummaryCard,
   EyeIcon,
@@ -115,6 +117,8 @@ function DispatchDetailModal({
               </div>
             )}
           />
+          <DispatchLocationPanel dispatch={dispatch} />
+          <DispatchEvidencePanel dispatch={dispatch} />
         </div>
       </Card>
     </div>
