@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { BrandMark } from "@/components/BrandMark";
-import { RoleSwitch } from "@/components/layout/RoleSwitch";
 import { Button } from "@/components/ui/Button";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 import { useCompanySession } from "@/features/demo/useCompanySession";
@@ -27,9 +26,6 @@ export function AuthedLayout({ title, items, children }: Props) {
     <div className="min-h-screen bg-brand-surface">
       <div className="md:flex">
         <aside className="w-full border-r border-brand-ink/20 bg-brand-ink p-4 text-white md:flex md:min-h-screen md:w-64 md:flex-col">
-          <Link to="/access" className="mb-4 flex items-center gap-2">
-            <BrandMark compact className="h-9 brightness-0 invert" />
-          </Link>
           <nav className="no-scrollbar flex gap-2 overflow-x-auto md:block md:space-y-1">
             {items.map((item) => (
               <NavLink
@@ -56,7 +52,9 @@ export function AuthedLayout({ title, items, children }: Props) {
                 <p className="text-sm font-medium">{title}</p>
               </div>
               <div className="flex items-center gap-2">
-                <RoleSwitch />
+                <span className="rounded-md border border-brand-border px-3 py-2 text-xs font-semibold text-brand-ink">
+                  Perfil Administrador
+                </span>
                 <Button variant="ghost" className="text-xs" onClick={exitToSelector}>
                   Salir
                 </Button>

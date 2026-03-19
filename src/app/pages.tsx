@@ -8,21 +8,14 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
-import { mockPatients } from "@/mocks/patients";
 import { validateDemoToken } from "@/services/mock/tokenValidator";
 
 export function LandingPage() {
   return (
     <div className="min-h-screen bg-brand-surface text-brand-text md:flex md:flex-col">
       <header className="border-b border-brand-border bg-white">
-        <div className="mx-auto flex max-w-[1360px] items-center justify-between px-4 py-4 md:px-8">
+        <div className="mx-auto flex max-w-[1360px] items-center px-4 py-4 md:px-8">
           <BrandMark compact />
-          <nav className="hidden items-center gap-8 text-[1rem] font-medium tracking-[0.02em] text-brand-ink md:flex">
-            <a className="text-brand-accent" href="#inicio">INICIO</a>
-            <a href="#servicios">SERVICIOS</a>
-            <a href="#empresa">NUESTRA EMPRESA</a>
-            <a href="#contacto">CONTACTO</a>
-          </nav>
         </div>
       </header>
 
@@ -35,7 +28,7 @@ export function LandingPage() {
                 Gestion de despachos
               </h1>
               <p className="mt-4 max-w-[620px] text-xl text-white/90">
-                Plataforma digital para facturas y despachos con control operativo en tiempo real.
+                Plataforma digital de almacen y distribucion para seguimiento de despachos en tiempo real.
               </p>
               <Link to="/access" className="mt-6 inline-block">
                 <Button className="px-8 py-4 text-xl font-bold uppercase !bg-brand-accent !text-white">Acceder</Button>
@@ -52,13 +45,9 @@ export function AccessPage() {
   const navigate = useNavigate();
   const setRole = useDemoRoleStore((s) => s.setRole);
   const setAdminSelectedClientId = useDemoRoleStore((s) => s.setAdminSelectedClientId);
-  const setPatientSession = useDemoRoleStore((s) => s.setPatientSession);
   const [userUsername, setUserUsername] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userError, setUserError] = useState("");
-  const [clientRif, setClientRif] = useState("");
-  const [clientPassword, setClientPassword] = useState("");
-  const [clientError, setClientError] = useState("");
 
   const onUserSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -81,34 +70,6 @@ export function AccessPage() {
     navigate("/portal/usuario", { replace: true });
   };
 
-  const onClientSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const rif = clientRif.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
-    const p = clientPassword.trim();
-
-    if (!rif || p !== "demo123") {
-      setClientError("Credenciales invalidas para Perfil Cliente.");
-      return;
-    }
-
-    const patient = mockPatients.find((item) =>
-      item.documentId.toUpperCase().replace(/[^A-Z0-9]/g, "") === rif,
-    );
-    if (!patient) {
-      setClientError("No se pudo abrir la sesion del cliente.");
-      return;
-    }
-
-    setClientError("");
-    setPatientSession({
-      role: "cliente",
-      patientId: patient.id,
-      documentId: patient.documentId,
-      startedAt: new Date().toISOString(),
-    });
-    navigate("/portal/cliente", { replace: true });
-  };
-
   return (
     <AccessPageTemplate
       userUsername={userUsername}
@@ -117,12 +78,6 @@ export function AccessPage() {
       onUserPasswordChange={setUserPassword}
       onUserSubmit={onUserSubmit}
       userError={userError}
-      clientRif={clientRif}
-      clientPassword={clientPassword}
-      onClientRifChange={setClientRif}
-      onClientPasswordChange={setClientPassword}
-      onClientSubmit={onClientSubmit}
-      clientError={clientError}
     />
   );
 }
@@ -143,7 +98,7 @@ export function TokenAccessPage() {
 
     setBanner(`Acceso por enlace temporal. Expira: ${result.expiresAt}`);
     addEvent("page_view", "demo-user", `Ingreso por token ${token}`);
-    navigate(`/portal/cliente?token=${encodeURIComponent(token)}`, { replace: true });
+    navigate(`/portal/usuario?token=${encodeURIComponent(token)}`, { replace: true });
   }, [token, setBanner, navigate, addEvent]);
 
   const validation = validateDemoToken(token);

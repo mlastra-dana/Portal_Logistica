@@ -27,7 +27,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
 
       <section className="mt-16 bg-brand-ink py-12 text-white" id="contacto">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4">
-          <BrandMark className="brightness-0 invert" />
+          <BrandMark />
           <p className="text-sm text-white/75">Gestion de despachos logisticos para operaciones B2B</p>
         </div>
       </section>

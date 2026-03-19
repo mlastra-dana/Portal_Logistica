@@ -1,13 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AccessPage, LandingPage, LoginPage, NotFoundPage, TokenAccessPage } from "@/app/pages";
-import { AdminPatientsPage, AdminUploadPage, AdminUploadsPage } from "@/features/admin/pages";
-import {
-  PatientClinicalDocumentsPage,
-  PatientMedicalResultsPage,
-  PatientOrdersExamsPage,
-  PatientOverviewPage,
-  PatientShareResultsPage,
-} from "@/features/patient/pages";
+import { AdminPatientsPage, AdminUploadsPage } from "@/features/admin/pages";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -16,16 +9,20 @@ export const router = createBrowserRouter([
   { path: "/access", element: <AccessPage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/r/:token", element: <TokenAccessPage /> },
-  { path: "/portal/cliente", element: <PatientMedicalResultsPage /> },
-  { path: "/portal/cliente/despachos", element: <PatientOverviewPage /> },
+  { path: "/portal/cliente", element: <Navigate to="/portal/usuario/despachos" replace /> },
+  { path: "/portal/cliente/despachos", element: <Navigate to="/portal/usuario/despachos" replace /> },
   { path: "/portal/cliente/documentos", element: <Navigate to="/portal/cliente/despachos" replace /> },
-  { path: "/portal/usuario", element: <Navigate to="/portal/usuario/dashboard" replace /> },
-  { path: "/portal/usuario/dashboard", element: <AdminPatientsPage /> },
+  { path: "/portal/usuario", element: <Navigate to="/portal/usuario/despachos" replace /> },
+  { path: "/portal/usuario/dashboard", element: <Navigate to="/portal/usuario/despachos" replace /> },
+  { path: "/portal/usuario/clientes", element: <AdminPatientsPage /> },
+  { path: "/portal/usuario/seguimiento", element: <AdminUploadsPage /> },
+  { path: "/portal/usuario/facturas", element: <AdminUploadsPage /> },
+  { path: "/portal/usuario/guias", element: <AdminUploadsPage /> },
   { path: "/portal/usuario/despachos", element: <AdminUploadsPage /> },
   { path: "/portal/usuario/documentos", element: <Navigate to="/portal/usuario/despachos" replace /> },
-  { path: "/portal/usuario/cargar", element: <AdminUploadPage /> },
+  { path: "/portal/usuario/cargar", element: <Navigate to="/portal/usuario/despachos" replace /> },
   { path: "/portal/usuario/cliente", element: <Navigate to="/portal/usuario/despachos" replace /> },
-  { path: "/portal/usuario/actividad", element: <Navigate to="/portal/usuario/dashboard" replace /> },
+  { path: "/portal/usuario/actividad", element: <Navigate to="/portal/usuario/despachos" replace /> },
   { path: "/results", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/results/overview", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/results/labs", element: <Navigate to="/portal/cliente" replace /> },
@@ -33,8 +30,8 @@ export const router = createBrowserRouter([
   { path: "/results/clinical-docs", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/results/share", element: <Navigate to="/portal/cliente" replace /> },
   { path: "/admin", element: <Navigate to="/portal/usuario" replace /> },
-  { path: "/admin/patients", element: <Navigate to="/portal/usuario/dashboard" replace /> },
+  { path: "/admin/patients", element: <Navigate to="/portal/usuario/clientes" replace /> },
   { path: "/admin/uploads", element: <Navigate to="/portal/usuario/despachos" replace /> },
-  { path: "/admin/audit", element: <Navigate to="/portal/usuario/dashboard" replace /> },
+  { path: "/admin/audit", element: <Navigate to="/portal/usuario/despachos" replace /> },
   { path: "*", element: <NotFoundPage /> },
 ]);

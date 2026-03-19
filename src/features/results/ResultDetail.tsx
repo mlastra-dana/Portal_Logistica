@@ -20,7 +20,7 @@ export function ResultDetail({ document, onDownload }: Props) {
           <h3 className="text-lg font-semibold">{document.studyName}</h3>
           <p className="text-sm text-slate-600">{document.category}</p>
         </div>
-        <Badge tone={document.status === "pendiente" ? "warning" : "success"}>
+        <Badge tone={document.status === "entregado" ? "success" : "warning"}>
           {document.status.toUpperCase()}
         </Badge>
       </div>

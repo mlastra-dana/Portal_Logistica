@@ -37,7 +37,7 @@ export function ResultsFilters({ filters, onChange }: Props) {
         >
           <option value="">Todos</option>
           <option value="Factura">Facturas</option>
-          <option value="Guia de facturacion">Guias de facturacion</option>
+          <option value="Guia de movilizacion">Guias de movilizacion</option>
         </select>
       </label>
       <label className="text-sm">
@@ -52,8 +52,10 @@ export function ResultsFilters({ filters, onChange }: Props) {
           className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
         >
           <option value="">Todos</option>
-          <option value="pendiente">Pendiente</option>
-          <option value="pagado">Pagado</option>
+          <option value="en_almacen">En almacen</option>
+          <option value="en_preparacion">En preparacion</option>
+          <option value="cargado_en_camion">Cargado en camion</option>
+          <option value="en_transito">En transito</option>
           <option value="entregado">Entregado</option>
         </select>
       </label>
