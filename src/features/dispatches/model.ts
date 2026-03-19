@@ -300,7 +300,7 @@ export function detectClientsFromDispatches(dispatches: DispatchRecord[]): Detec
 
 export function dispatchStatusLabel(status: DispatchStatus) {
   if (status === "en_almacen") return "En almacén";
-  if (status === "en_preparacion") return "En alistamiento";
+  if (status === "en_preparacion") return "En preparación";
   if (status === "cargado") return "Cargado";
   if (status === "en_transito") return "En ruta";
   return "Entregado";
