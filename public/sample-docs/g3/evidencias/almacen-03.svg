@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#12355E"/>
+  <rect x="90" y="100" width="1020" height="600" rx="26" fill="#F5F8FC"/>
+  <rect x="140" y="180" width="920" height="28" rx="8" fill="#D2DBE8"/>
+  <rect x="140" y="320" width="920" height="28" rx="8" fill="#D2DBE8"/>
+  <rect x="140" y="460" width="920" height="28" rx="8" fill="#D2DBE8"/>
+  <rect x="170" y="215" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="340" y="215" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="510" y="215" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="680" y="215" width="140" height="90" rx="10" fill="#C7D3E3"/>
+  <rect x="170" y="355" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="340" y="355" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="510" y="355" width="140" height="90" rx="10" fill="#C7D3E3"/><rect x="680" y="355" width="140" height="90" rx="10" fill="#C7D3E3"/>
+  <text x="170" y="585" fill="#1F4B93" font-family="Arial" font-size="42" font-weight="700">EN ALMACEN · CONTROL DE INVENTARIO</text>
+</svg>

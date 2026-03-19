@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#123B71"/>
+  <rect x="80" y="120" width="1040" height="560" rx="26" fill="#F5F8FC"/>
+  <rect x="150" y="460" width="760" height="100" rx="12" fill="#224E96"/>
+  <rect x="190" y="380" width="160" height="70" rx="10" fill="#D0DAE8"/><rect x="370" y="380" width="160" height="70" rx="10" fill="#D0DAE8"/><rect x="550" y="380" width="160" height="70" rx="10" fill="#D0DAE8"/>
+  <rect x="930" y="500" width="120" height="60" rx="10" fill="#F39A2E"/>
+  <circle cx="280" cy="585" r="28" fill="#2B3B53"/><circle cx="760" cy="585" r="28" fill="#2B3B53"/>
+  <text x="150" y="245" fill="#1F4B93" font-family="Arial" font-size="42" font-weight="700">CARGADO · INSPECCION FINAL</text>
+</svg>

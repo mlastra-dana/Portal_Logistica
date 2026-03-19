@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#114582"/>
+  <rect x="0" y="540" width="1200" height="260" fill="#DEE5EF"/>
+  <rect x="220" y="420" width="620" height="110" rx="14" fill="#2557A2"/>
+  <rect x="860" y="445" width="150" height="85" rx="12" fill="#F39A2E"/>
+  <rect x="280" y="360" width="120" height="52" rx="8" fill="#C9D6E8"/><rect x="420" y="360" width="120" height="52" rx="8" fill="#C9D6E8"/><rect x="560" y="360" width="120" height="52" rx="8" fill="#C9D6E8"/>
+  <circle cx="340" cy="555" r="30" fill="#2C3B51"/><circle cx="760" cy="555" r="30" fill="#2C3B51"/><circle cx="920" cy="555" r="30" fill="#2C3B51"/>
+  <text x="170" y="160" fill="#FFFFFF" font-family="Arial" font-size="42" font-weight="700">EN TRANSITO · TRAZABILIDAD ACTIVA</text>
+</svg>

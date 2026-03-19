@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#0E3F7A"/>
+  <rect x="0" y="520" width="1200" height="280" fill="#DDE4EE"/>
+  <rect x="180" y="400" width="650" height="120" rx="14" fill="#1F4B93"/>
+  <rect x="840" y="430" width="170" height="90" rx="12" fill="#F39A2E"/>
+  <circle cx="300" cy="545" r="35" fill="#2D3C52"/><circle cx="760" cy="545" r="35" fill="#2D3C52"/><circle cx="920" cy="545" r="35" fill="#2D3C52"/>
+  <path d="M0 430 C180 360 350 360 520 430 C700 500 860 500 1200 430" stroke="#95B8E2" stroke-width="8" fill="none"/>
+  <text x="150" y="170" fill="#FFFFFF" font-family="Arial" font-size="44" font-weight="700">EN TRANSITO</text>
+  <text x="150" y="220" fill="#D3E1F4" font-family="Arial" font-size="28">Camion en ruta con carga visible</text>
+</svg>

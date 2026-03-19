@@ -1,6 +1,11 @@
 import { ResultDocument } from "@/app/types";
 import { mockPatients } from "@/mocks/patients";
 
+const EVIDENCIA_ALMACEN = "/sample-docs/g3/evidencias-real/En%20almacen.png";
+const EVIDENCIA_PREPARACION = "/sample-docs/g3/evidencias-real/En%20preparacion.png";
+const EVIDENCIA_CARGADO = "/sample-docs/g3/evidencias-real/cargado.png";
+const EVIDENCIA_ENTREGADO = "/sample-docs/g3/evidencias-real/Entregado.png";
+
 export type DispatchStatus =
   | "en_almacen"
   | "en_preparacion"
@@ -25,7 +30,7 @@ export type DispatchRecord = {
   evidencias: DispatchEvidence[];
 };
 
-export type DispatchEvidenceStage = "cargado" | "en_transito" | "entregado";
+export type DispatchEvidenceStage = "en_almacen" | "en_preparacion" | "cargado" | "en_transito" | "entregado";
 
 export type DispatchEvidence = {
   id: string;
@@ -61,6 +66,14 @@ export const DISPATCH_STATUS_FLOW: DispatchStatus[] = [
   "entregado",
 ];
 
+export const EVIDENCE_STAGE_DEFAULT_IMAGE: Record<DispatchEvidenceStage, string> = {
+  en_almacen: EVIDENCIA_ALMACEN,
+  en_preparacion: EVIDENCIA_PREPARACION,
+  cargado: EVIDENCIA_CARGADO,
+  en_transito: EVIDENCIA_CARGADO,
+  entregado: EVIDENCIA_ENTREGADO,
+};
+
 function normalizeDate(date: string | undefined) {
   return (date || "").slice(0, 10);
 }
@@ -86,13 +99,12 @@ function compareByDateDesc(a: ResultDocument, b: ResultDocument) {
 }
 
 const geoByCity: Array<{ key: string; lat: number; lng: number; direccion: string }> = [
-  { key: "caracas", lat: 10.4806, lng: -66.9036, direccion: "Centro logístico G3, La Yaguara, Caracas" },
+  { key: "caracas", lat: 10.4806, lng: -66.9036, direccion: "Centro logístico G3, Caracas" },
   { key: "guarenas", lat: 10.4703, lng: -66.6168, direccion: "Centro de distribución Guarenas, Miranda" },
   { key: "barquisimeto", lat: 10.0739, lng: -69.3228, direccion: "Punto de entrega Barquisimeto, Lara" },
   { key: "maracay", lat: 10.2469, lng: -67.5958, direccion: "Hub de entregas Maracay, Aragua" },
   { key: "los teques", lat: 10.3446, lng: -67.0433, direccion: "Zona de entrega Los Teques, Miranda" },
   { key: "farmatodo cedis maracay", lat: 10.2418, lng: -67.6018, direccion: "CEDIS Farmatodo Maracay, Aragua" },
-  { key: "farmatodo cedis la yaguara", lat: 10.4745, lng: -66.9417, direccion: "CEDIS Farmatodo La Yaguara, Caracas" },
   { key: "puerto cabello", lat: 10.4731, lng: -68.0125, direccion: "Puerto Cabello, Carabobo" },
 ];
 
@@ -115,30 +127,64 @@ function buildEvidence(idDespacho: string, status: DispatchStatus, cliente: stri
   const statusIndex = DISPATCH_STATUS_FLOW.indexOf(status);
   const items: DispatchEvidence[] = [];
 
+  const evidenceByStage: Record<Exclude<DispatchEvidenceStage, "en_transito">, { descripcion: string; imageUrl: string }> = {
+    en_almacen: {
+      descripcion: `Mercancía paletizada en almacén para ${cliente}.`,
+      imageUrl: EVIDENCIA_ALMACEN,
+    },
+    en_preparacion: {
+      descripcion: "Operador preparando pallets y etiquetado para salida.",
+      imageUrl: EVIDENCIA_PREPARACION,
+    },
+    cargado: {
+      descripcion: `Mercancía cargada en camión, lista para salida de ruta para ${cliente}.`,
+      imageUrl: EVIDENCIA_CARGADO,
+    },
+    entregado: {
+      descripcion: "Mercancía descargada y entrega confirmada en destino.",
+      imageUrl: EVIDENCIA_ENTREGADO,
+    },
+  };
+
+  if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("en_almacen")) {
+    const variant = evidenceByStage.en_almacen;
+    items.push({
+      id: `${idDespacho}-ev-almacen`,
+      etapa: "en_almacen",
+      descripcion: variant.descripcion,
+      imageUrl: variant.imageUrl,
+    });
+  }
+
+  if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("en_preparacion")) {
+    const variant = evidenceByStage.en_preparacion;
+    items.push({
+      id: `${idDespacho}-ev-preparacion`,
+      etapa: "en_preparacion",
+      descripcion: variant.descripcion,
+      imageUrl: variant.imageUrl,
+    });
+  }
+
   if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("cargado")) {
+    const variant = evidenceByStage.cargado;
     items.push({
       id: `${idDespacho}-ev-cargado`,
       etapa: "cargado",
-      descripcion: `Carga verificada de bultos para ${cliente}.`,
-      imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+      descripcion: variant.descripcion,
+      imageUrl: variant.imageUrl,
     });
   }
 
-  if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("en_transito") && hashString(idDespacho) % 2 === 0) {
-    items.push({
-      id: `${idDespacho}-ev-transito`,
-      etapa: "en_transito",
-      descripcion: "Unidad en ruta con trazabilidad activa.",
-      imageUrl: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80",
-    });
-  }
+  // En transito no requiere evidencia visual para este flujo demo.
 
   if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("entregado")) {
+    const variant = evidenceByStage.entregado;
     items.push({
       id: `${idDespacho}-ev-entregado`,
       etapa: "entregado",
-      descripcion: "Confirmación visual de entrega en destino.",
-      imageUrl: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80",
+      descripcion: variant.descripcion,
+      imageUrl: variant.imageUrl,
     });
   }
 

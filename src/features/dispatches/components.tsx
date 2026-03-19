@@ -7,6 +7,7 @@ import {
   DispatchRecord,
   DispatchStatus,
   DISPATCH_STATUS_FLOW,
+  EVIDENCE_STAGE_DEFAULT_IMAGE,
   dispatchStatusLabel,
 } from "@/features/dispatches/model";
 
@@ -255,11 +256,20 @@ function EvidenceCard({ item }: { item: DispatchEvidence }) {
   return (
     <article className="overflow-hidden rounded-lg border border-brand-border bg-brand-surface/40">
       <div className="h-32 w-full overflow-hidden bg-brand-surface">
-        <img src={item.imageUrl} alt={`Evidencia ${dispatchStatusLabel(item.etapa)}`} className="h-full w-full object-cover" />
+        <img
+          src={item.imageUrl}
+          alt={`Evidencia ${dispatchStatusLabel(item.etapa)}`}
+          className="h-full w-full object-cover"
+          loading="lazy"
+          onError={(event) => {
+            const target = event.currentTarget;
+            target.onerror = null;
+            target.src = EVIDENCE_STAGE_DEFAULT_IMAGE[item.etapa];
+          }}
+        />
       </div>
       <div className="p-3">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-muted">{dispatchStatusLabel(item.etapa)}</p>
-        <p className="mt-1 text-sm text-brand-text">{item.descripcion}</p>
       </div>
     </article>
   );

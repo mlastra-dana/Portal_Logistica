@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#18457F"/>
+  <rect x="70" y="130" width="1060" height="560" rx="28" fill="#F7F9FD"/>
+  <rect x="180" y="430" width="680" height="120" rx="14" fill="#1F4B93"/>
+  <rect x="210" y="360" width="260" height="70" rx="12" fill="#D8E0EC"/>
+  <rect x="500" y="360" width="260" height="70" rx="12" fill="#CDD7E6"/>
+  <circle cx="300" cy="570" r="34" fill="#27364A"/><circle cx="760" cy="570" r="34" fill="#27364A"/>
+  <rect x="870" y="470" width="170" height="80" rx="10" fill="#F39A2E"/>
+  <text x="140" y="260" fill="#1F4B93" font-family="Arial" font-size="44" font-weight="700">CARGADO</text>
+  <text x="140" y="305" fill="#5E6A7B" font-family="Arial" font-size="28">Mercancia en camion antes de salida</text>
+</svg>
