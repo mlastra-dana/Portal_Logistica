@@ -4,7 +4,7 @@ import { LabOrderResult, ResultItem, TrendSeries } from "@/types/medical";
 function numericItem(parameterId: string, value: number, observation?: string): ResultItem {
   const cfg = getCatalogItem(parameterId);
   if (!cfg || cfg.resultType !== "numeric") {
-    throw new Error(`Parametro numerico no encontrado: ${parameterId}`);
+    throw new Error(`Parámetro numérico no encontrado: ${parameterId}`);
   }
 
   return {
@@ -22,7 +22,7 @@ function numericItem(parameterId: string, value: number, observation?: string): 
 function qualitativeItem(parameterId: string, value: string, observation?: string): ResultItem {
   const cfg = getCatalogItem(parameterId);
   if (!cfg || cfg.resultType !== "qualitative") {
-    throw new Error(`Parametro cualitativo no encontrado: ${parameterId}`);
+    throw new Error(`Parámetro cualitativo no encontrado: ${parameterId}`);
   }
 
   return {
@@ -74,7 +74,7 @@ export const mockLabResults: LabOrderResult[] = [
     patientId: "p-001",
     validatedBy: "Dr. Roberto Salinas",
     validatedAt: "2026-02-12T09:20:00Z",
-    notes: "Hemograma en rango general. EGO con trazas de proteinas.",
+    notes: "Hemograma en rango general. EGO con trazas de proteínas.",
     pdfKey: "/sample-docs/result-demo-hemograma.pdf",
     exams: [
       {
@@ -94,7 +94,7 @@ export const mockLabResults: LabOrderResult[] = [
           qualitativeItem("ur-aspect", "Claro"),
           numericItem("ur-ph", 6.2),
           numericItem("ur-density", 1.02),
-          qualitativeItem("ur-protein", "TRAZAS", "Controlar hidratacion"),
+          qualitativeItem("ur-protein", "TRAZAS", "Controlar hidratación"),
           qualitativeItem("ur-glu", "NEG"),
         ],
       },
@@ -104,7 +104,7 @@ export const mockLabResults: LabOrderResult[] = [
     orderId: "ord-003",
     patientId: "p-002",
     validatedBy: "Dra. Nora Baez",
-    notes: "Orden en proceso. Pendiente validacion final de panel metabolico.",
+    notes: "Orden en proceso. Pendiente validación final de panel metabólico.",
     pdfKey: "/sample-docs/result-demo-bioquimica.pdf",
     exams: [
       {
@@ -128,7 +128,7 @@ export const mockLabResults: LabOrderResult[] = [
     patientId: "p-002",
     validatedBy: "Dr. Samuel Vera",
     validatedAt: "2026-01-22T11:05:00Z",
-    notes: "PCR con elevacion leve. Perfil lipidico con LDL sobre meta.",
+    notes: "PCR con elevación leve. Perfil lipídico con LDL sobre meta.",
     pdfKey: "/sample-docs/result-demo-lipidico.pdf",
     exams: [
       {
@@ -152,7 +152,7 @@ export const mockLabResults: LabOrderResult[] = [
     patientId: "p-003",
     validatedBy: "Dra. Elena Duarte",
     validatedAt: "2026-02-16T08:40:00Z",
-    notes: "Hemograma normal. Glucosa en limite alto, vigilar control dietario.",
+    notes: "Hemograma normal. Glucosa en límite alto, vigilar control dietario.",
     pdfKey: "/sample-docs/result-demo-orina.pdf",
     exams: [
       {
@@ -182,7 +182,7 @@ export const mockLabResults: LabOrderResult[] = [
     orderId: "ord-006",
     patientId: "p-003",
     validatedBy: "Dra. Elena Duarte",
-    notes: "Orden pendiente. Resultados aun no disponibles.",
+    notes: "Orden pendiente. Resultados aún no disponibles.",
     pdfKey: "/sample-docs/result-demo-tiroides.pdf",
     exams: [
       {
@@ -190,7 +190,7 @@ export const mockLabResults: LabOrderResult[] = [
         panelName: getPanel("tiroides")!.displayName,
         category: "Tiroides",
         status: "pendiente",
-        items: [numericItem("tsh", 5.6, "Sospecha de hipotiroidismo subclinico"), numericItem("ft4", 0.88)],
+        items: [numericItem("tsh", 5.6, "Sospecha de hipotiroidismo subclínico"), numericItem("ft4", 0.88)],
       },
     ],
   },

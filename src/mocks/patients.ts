@@ -26,7 +26,7 @@ export const mockPatients: PatientProfile[] = [
     historyNumber: "CLI-0001",
     insurer: "N/A",
     plan: "Cuenta corporativa",
-    site: "Centro logistico Guarenas",
+    site: "Centro logístico Guarenas",
     consents: [
       { id: "c-1", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-11" },
       { id: "c-2", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-11" },
@@ -57,7 +57,7 @@ export const mockPatients: PatientProfile[] = [
     historyNumber: "CLI-0002",
     insurer: "N/A",
     plan: "Cuenta corporativa",
-    site: "Centro logistico Caracas",
+    site: "Centro logístico Caracas",
     consents: [
       { id: "c-3", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-10" },
       { id: "c-4", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-10" },
@@ -88,7 +88,7 @@ export const mockPatients: PatientProfile[] = [
     historyNumber: "CLI-0003",
     insurer: "N/A",
     plan: "Cuenta corporativa",
-    site: "Centro logistico Capital",
+    site: "Centro logístico Capital",
     consents: [
       { id: "c-5", name: "Tratamiento de datos operativos", accepted: true, updatedAt: "2026-03-09" },
       { id: "c-6", name: "Consulta digital de despachos", accepted: true, updatedAt: "2026-03-09" },

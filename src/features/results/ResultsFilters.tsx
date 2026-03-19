@@ -37,7 +37,7 @@ export function ResultsFilters({ filters, onChange }: Props) {
         >
           <option value="">Todos</option>
           <option value="Factura">Facturas</option>
-          <option value="Guia de movilizacion">Guias de movilizacion</option>
+          <option value="Guía de movilización">Guías de movilización</option>
         </select>
       </label>
       <label className="text-sm">

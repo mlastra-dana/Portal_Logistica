@@ -9,7 +9,7 @@ export type UploadPayload = {
 export async function uploadDocument(payload: UploadPayload): Promise<ResultDocument> {
   if (isAmplifyConfigured()) {
     // TODO: integrar Amplify Storage put/getUrl + persistencia de metadata via API.
-    throw new Error("Storage Cognito/S3 aun no conectado en este prototipo");
+    throw new Error("Storage Cognito/S3 aún no conectado en este prototipo");
   }
 
   const localUrl = URL.createObjectURL(payload.file);

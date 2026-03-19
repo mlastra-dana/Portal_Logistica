@@ -17,7 +17,7 @@ export function DanaLayout({ children }: Props) {
     <div className="min-h-screen bg-[#f8f9fb] text-[#2d3138]">
       <header className="sticky top-0 z-20 border-b border-[#e5e7eb] bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link to="/access" aria-label="Ir al acceso del portal G3 Logistica">
+          <Link to="/access" aria-label="Ir al acceso del portal G3 Logística">
             <BrandMark compact />
           </Link>
           <Button className={danaButtonPrimary} onClick={exitToSelector}>

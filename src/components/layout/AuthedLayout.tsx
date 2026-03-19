@@ -48,7 +48,7 @@ export function AuthedLayout({ title, items, children }: Props) {
                 <div className="mb-1 flex items-center gap-3">
                   <BrandMark compact />
                 </div>
-                <p className="text-xs text-brand-muted">Portal G3 Logistica / {location.pathname}</p>
+                <p className="text-xs text-brand-muted">Portal G3 Logística / {location.pathname}</p>
                 <p className="text-sm font-medium">{title}</p>
               </div>
               <div className="flex items-center gap-2">

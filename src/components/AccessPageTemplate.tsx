@@ -52,7 +52,7 @@ export function AccessPageTemplate({
     <div className="min-h-screen bg-brand-surface text-brand-text">
       <header className="sticky top-0 z-20 border-b border-brand-border bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-          <Link to="/access" aria-label="Ir al acceso del portal G3 Logistica">
+          <Link to="/access" aria-label="Ir al acceso del portal G3 Logística">
             <BrandMark compact className="h-16 md:h-[76px]" />
           </Link>
           <Button className={actionButton} onClick={exitToSelector}>

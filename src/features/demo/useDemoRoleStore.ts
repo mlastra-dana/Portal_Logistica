@@ -60,7 +60,7 @@ export const useDemoRoleStore = create<DemoRoleState>()(
           window.localStorage.removeItem("g3-logistica-demo-session");
         }
         set({ patientSession: null, rolePickerOpen: false });
-        useAuditStore.getState().addEvent("role_changed", "demo-user", "Sesion de cliente finalizada");
+        useAuditStore.getState().addEvent("role_changed", "demo-user", "Sesión de cliente finalizada");
       },
       resetCompanySession: () => {
         if (typeof window !== "undefined") {

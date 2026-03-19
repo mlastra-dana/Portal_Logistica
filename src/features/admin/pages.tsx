@@ -40,7 +40,7 @@ const adminNav = [
 function AdminGuard({ children }: { children: ReactNode }) {
   const role = useDemoRoleStore((s) => s.role);
   if (role !== "usuario") {
-    return <RestrictedAccess message="Tu perfil actual es cliente. Esta area esta disponible solo para Perfil Administrador." />;
+    return <RestrictedAccess message="Tu perfil actual es cliente. Esta área está disponible solo para Perfil Administrador." />;
   }
   return <>{children}</>;
 }
@@ -424,7 +424,7 @@ export function AdminUploadsPage() {
                 id="dispatch-query"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Despacho, cliente, factura o guia"
+                placeholder="Despacho, cliente, factura o guía"
               />
             </div>
             <div>
@@ -515,7 +515,7 @@ export function AdminUploadPage() {
         historyNumber: `AI-${selectedDetectedClient.rif.replace(/[^A-Z0-9]/gi, "").slice(-6)}`,
         insurer: "N/A",
         plan: "Cuenta empresarial",
-        site: "Centro logistico principal",
+        site: "Centro logístico principal",
         consents: [],
       }
     : undefined);
@@ -525,7 +525,7 @@ export function AdminUploadPage() {
       <AdminGuard>
         <Card className="rounded-lg border-brand-border shadow-none">
           <h1 className="text-2xl font-black text-brand-ink">Cargar despacho</h1>
-          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas asociar factura o guia de movilizacion.</p>
+          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas asociar factura o guía de movilización.</p>
           <div className="mt-3">
             <Label htmlFor="upload-client-selector">Cliente</Label>
             <select

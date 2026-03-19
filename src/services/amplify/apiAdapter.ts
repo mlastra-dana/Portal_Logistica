@@ -6,6 +6,6 @@ export async function saveDocumentMetadata(_document: ResultDocument) {
 }
 
 export async function pushAuditEvent(_event: AuditEvent) {
-  // TODO: enviar auditoria a API segura para cumplimiento.
+  // TODO: enviar auditoría a API segura para cumplimiento.
   return true;
 }

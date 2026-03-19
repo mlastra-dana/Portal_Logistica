@@ -53,21 +53,21 @@ export function UploadForm({ patient, actor }: Props) {
             .map((tag) => tag.trim())
             .filter(Boolean),
           documentType: isFactura ? "factura" : "guia",
-          tipoDocumento: isFactura ? "Factura" : "Guia de movilizacion",
+          tipoDocumento: isFactura ? "Factura" : "Guía de movilización",
           numeroFactura: isFactura ? `FT-${serial}` : undefined,
           numeroGuia: isFactura ? undefined : `GM-${serial}`,
           cliente: patient.fullName,
         fechaEmision: studyDate,
         origen: site || patient.site,
-        destino: "Pendiente de asignacion",
+        destino: "Pendiente de asignación",
       },
     });
 
     addDocument(newDoc);
     await saveDocumentMetadata(newDoc);
-    addAudit("upload", actor, `Despacho logistico cargado: ${newDoc.studyName}`);
+    addAudit("upload", actor, `Despacho logístico cargado: ${newDoc.studyName}`);
 
-    setStatus("Despacho cargado y metadata guardada (modo demostracion).");
+    setStatus("Despacho cargado y metadata guardada (modo demostración).");
     setStudyName("");
     setStudyDate("");
     setTags("");
@@ -76,12 +76,12 @@ export function UploadForm({ patient, actor }: Props) {
 
   return (
     <Card>
-      <h3 className="mb-2 text-base font-semibold">Cargar despacho logistico</h3>
+      <h3 className="mb-2 text-base font-semibold">Cargar despacho logístico</h3>
       <p className="mb-4 text-xs text-slate-500">{getStorageStatusMessage()}</p>
 
       <form className="space-y-3" onSubmit={onSubmit}>
         <label className="text-sm">
-          Categoria
+          Categoría
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as ResultCategory)}
@@ -89,7 +89,7 @@ export function UploadForm({ patient, actor }: Props) {
           >
             {categories.map((option) => (
               <option key={option} value={option}>
-                {option === "Factura" ? "Factura" : "Guia de movilizacion"}
+                {option === "Factura" ? "Factura" : "Guía de movilización"}
               </option>
             ))}
           </select>
@@ -105,7 +105,7 @@ export function UploadForm({ patient, actor }: Props) {
         </label>
 
         <label className="text-sm">
-          Fecha de emision
+          Fecha de emisión
           <Input type="date" value={studyDate} onChange={(e) => setStudyDate(e.target.value)} />
         </label>
 
@@ -116,7 +116,7 @@ export function UploadForm({ patient, actor }: Props) {
 
         <label className="text-sm">
           Etiquetas opcionales
-          <Input placeholder="facturacion, despacho nacional" value={tags} onChange={(e) => setTags(e.target.value)} />
+          <Input placeholder="facturación, despacho nacional" value={tags} onChange={(e) => setTags(e.target.value)} />
         </label>
 
         <label className="text-sm">

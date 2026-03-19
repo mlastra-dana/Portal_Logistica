@@ -25,10 +25,10 @@ export function LandingPage() {
             <div className="g3-grid absolute inset-0 opacity-25" />
             <div className="relative mx-auto max-w-[1120px]">
               <h1 className="max-w-[700px] text-4xl font-black leading-[1.05] text-white md:text-7xl">
-                Gestion de despachos
+                Gestión de despachos
               </h1>
               <p className="mt-4 max-w-[620px] text-xl text-white/90">
-                Plataforma digital de almacen y distribucion para seguimiento de despachos en tiempo real.
+                Plataforma digital de almacén y distribución para seguimiento de despachos en tiempo real.
               </p>
               <Link to="/access" className="mt-6 inline-block">
                 <Button className="px-8 py-4 text-xl font-bold uppercase !bg-brand-accent !text-white">Acceder</Button>
@@ -60,7 +60,7 @@ export function AccessPage() {
 
     const matchedRole = validUserCreds[u];
     if (!matchedRole || p !== "demo123") {
-      setUserError("Credenciales invalidas para Perfil Administrador.");
+      setUserError("Credenciales inválidas para Perfil Administrador.");
       return;
     }
 
@@ -108,9 +108,9 @@ export function TokenAccessPage() {
     <PublicLayout>
       <div className="mx-auto max-w-xl px-4 py-16">
         <Card>
-          <h1 className="text-2xl font-bold">Enlace no valido o expirado</h1>
+          <h1 className="text-2xl font-bold">Enlace no válido o expirado</h1>
           <Alert variant="warn" className="mt-3">
-            Este acceso temporal no esta disponible. Solicita un nuevo enlace.
+            Este acceso temporal no está disponible. Solicita un nuevo enlace.
           </Alert>
           <Link to="/access" className="mt-4 inline-block">
             <Button>Volver al acceso</Button>
@@ -127,7 +127,7 @@ export function NotFoundPage() {
       <div className="mx-auto max-w-xl px-4 py-16">
         <Card>
           <h1 className="text-2xl font-bold">404</h1>
-          <p className="mt-2 text-brand-muted">La pagina no existe en Portal G3 Logistica.</p>
+          <p className="mt-2 text-brand-muted">La página no existe en Portal G3 Logística.</p>
           <Link to="/access" className="mt-4 inline-block">
             <Button>Volver al acceso</Button>
           </Link>

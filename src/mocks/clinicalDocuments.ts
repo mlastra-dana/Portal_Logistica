@@ -7,16 +7,16 @@ export const mockClinicalDocuments: ClinicalDocument[] = [
     title: "Informe complementario de laboratorio",
     documentType: "informe",
     date: "2026-02-21",
-    summary: "Interpretacion clinica preliminar de panel metabolico.",
+    summary: "Interpretación clínica preliminar de panel metabólico.",
     fileUrl: "/sample-docs/example-result.pdf",
   },
   {
     id: "cd-2",
     patientId: "p-001",
-    title: "Indicaciones tecnicas para proxima toma",
+    title: "Indicaciones técnicas para próxima toma",
     documentType: "indicacion",
     date: "2026-02-26",
-    summary: "Ayuno de 10 horas y suspension de suplementos 24h antes.",
+    summary: "Ayuno de 10 horas y suspensión de suplementos 24h antes.",
     fileUrl: "/sample-docs/example-result.pdf",
   },
   {
@@ -25,7 +25,7 @@ export const mockClinicalDocuments: ClinicalDocument[] = [
     title: "Recomendaciones post examen",
     documentType: "recomendacion",
     date: "2026-02-26",
-    summary: "Mantener hidratacion y seguimiento con medico tratante.",
+    summary: "Mantener hidratación y seguimiento con médico tratante.",
     fileUrl: "/sample-docs/example-result.pdf",
   },
 ];

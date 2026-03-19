@@ -259,12 +259,12 @@ export function PatientMedicalResultsPage() {
       <section className="mx-auto max-w-7xl px-4 py-8">
         <Card className="rounded-lg border-brand-border shadow-none">
           <h1 className="text-2xl font-black text-brand-ink">Perfil Cliente · Mis despachos</h1>
-          <p className="mt-2 text-sm text-brand-muted">Seguimiento de despachos con factura y guia de movilizacion asociadas.</p>
+          <p className="mt-2 text-sm text-brand-muted">Seguimiento de despachos con factura y guía de movilización asociadas.</p>
         </Card>
 
         {client === null ? (
           <Card className="mt-4 rounded-lg shadow-none">
-            <p className="text-sm text-brand-muted">No hay una sesion de cliente activa.</p>
+            <p className="text-sm text-brand-muted">No hay una sesión de cliente activa.</p>
             <Link to="/access" className="mt-3 inline-block">
               <Button className="rounded-md">Volver al acceso</Button>
             </Link>
@@ -280,16 +280,16 @@ export function PatientMedicalResultsPage() {
             </section>
 
             <Card className="mt-4 rounded-lg shadow-none">
-              <h2 className="text-base font-semibold">Informacion de mi cuenta</h2>
+              <h2 className="text-base font-semibold">Información de mi cuenta</h2>
               <div className="mt-3 grid gap-2 text-sm md:grid-cols-2">
                 <p><strong>Cliente:</strong> {detectedClient?.nombreCliente || client.nombreCliente || client.fullName}</p>
                 <p><strong>RIF:</strong> {detectedClient?.rif || client.rif || client.documentId}</p>
                 <p><strong>Contacto principal:</strong> {client.contactoPrincipal || client.fullName}</p>
                 <p><strong>Correo:</strong> {client.correo || client.email}</p>
-                <p><strong>Telefono:</strong> {client.telefono || client.phone}</p>
-                <p><strong>Direccion fiscal:</strong> {client.direccionFiscal || client.address}</p>
+                <p><strong>Teléfono:</strong> {client.telefono || client.phone}</p>
+                <p><strong>Dirección fiscal:</strong> {client.direccionFiscal || client.address}</p>
                 <p><strong>Ciudad / Estado:</strong> {client.ciudad || "N/A"} / {client.estado || "N/A"}</p>
-                <p><strong>Origen de datos:</strong> Base de datos de clientes G3 Logistica</p>
+                <p><strong>Origen de datos:</strong> Base de datos de clientes G3 Logística</p>
               </div>
             </Card>
 
@@ -301,7 +301,7 @@ export function PatientMedicalResultsPage() {
                     id="dispatch-query"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Despacho, factura o guia"
+                    placeholder="Despacho, factura o guía"
                   />
                 </div>
                 <div>
@@ -330,7 +330,7 @@ export function PatientMedicalResultsPage() {
                   >
                     <option value="all">Todos</option>
                     <option value="factura">Con factura</option>
-                    <option value="guia">Con guia</option>
+                    <option value="guia">Con guía</option>
                   </select>
                 </div>
               </div>

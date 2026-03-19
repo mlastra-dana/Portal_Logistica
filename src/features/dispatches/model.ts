@@ -179,7 +179,7 @@ function buildEvidence(idDespacho: string, status: DispatchStatus, cliente: stri
     });
   }
 
-  // En transito no requiere evidencia visual para este flujo demo.
+  // En tránsito no requiere evidencia visual para este flujo demo.
 
   if (statusIndex >= DISPATCH_STATUS_FLOW.indexOf("entregado")) {
     const variant = evidenceByStage.entregado;
@@ -230,16 +230,16 @@ export function buildDispatches(documents: ResultDocument[]): DispatchRecord[] {
         patientId: base.patientId,
         rif: base.patientDocument || "N/A",
         cliente: base.cliente,
-        origen: guia?.origen || factura?.origen || "Centro logistico principal",
+        origen: guia?.origen || factura?.origen || "Centro logístico principal",
         destino: guia?.destino || factura?.destino || "Destino por confirmar",
         fecha,
         estatus: inferStatus(`${base.patientId}-${ref}-${fecha}`),
         facturaAsociada: factura?.numeroFactura || "Sin factura asociada",
-        guiaAsociada: guia?.numeroGuia || "Sin guia asociada",
+        guiaAsociada: guia?.numeroGuia || "Sin guía asociada",
         facturaDoc: factura,
         guiaDoc: guia,
         ubicacion: resolveLocation(
-          guia?.origen || factura?.origen || "Centro logistico principal",
+          guia?.origen || factura?.origen || "Centro logístico principal",
           guia?.destino || factura?.destino || "Destino por confirmar",
           idDespacho,
         ),
@@ -293,7 +293,7 @@ export function detectClientsFromDispatches(dispatches: DispatchRecord[]): Detec
       correo: known?.correo || known?.email || "operaciones@g3logistica.com",
       estatusCuenta: known?.estatusCuenta || "Activa",
       despachos: list.length,
-      origenDeteccion: "Detectado automaticamente desde factura y guia de movilizacion",
+      origenDeteccion: "Detectado automáticamente desde factura y guía de movilización",
     };
   }).sort((a, b) => a.nombreCliente.localeCompare(b.nombreCliente));
 }

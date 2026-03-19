@@ -27,7 +27,7 @@ export type ResultDocument = {
   createdAt: string;
   tags?: string[];
   documentType: LogisticsDocumentType;
-  tipoDocumento: "Factura" | "Guia de movilizacion";
+  tipoDocumento: "Factura" | "Guía de movilización";
   numeroFactura?: string;
   numeroGuia?: string;
   cliente: string;
