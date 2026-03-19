@@ -167,7 +167,7 @@ export const mockDocuments: ResultDocument[] = [
     cliente: "Nestlé, C.A.",
     fechaEmision: "2026-03-02",
     origen: "Caracas",
-    destino: "Farmatodo CEDIS Maracay",
+    destino: "Farmatodo CEDIS Charallave",
   },
   {
     id: "doc-007",
@@ -335,6 +335,6 @@ export const mockDocuments: ResultDocument[] = [
     cliente: "Nestlé, C.A.",
     fechaEmision: "2026-03-17",
     origen: "Caracas",
-    destino: "Farmatodo CEDIS Maracay",
+    destino: "Farmatodo CEDIS Charallave",
   },
 ];

@@ -1,8 +1,8 @@
 import { ResultDocument } from "@/app/types";
 import { mockPatients } from "@/mocks/patients";
 
-const EVIDENCIA_ALMACEN = "/sample-docs/g3/evidencias-real/En%20almacen.png";
-const EVIDENCIA_PREPARACION = "/sample-docs/g3/evidencias-real/En%20preparacion.png";
+const EVIDENCIA_ALMACEN = "/sample-docs/g3/evidencias-real/almacen.png";
+const EVIDENCIA_PREPARACION = "/sample-docs/g3/evidencias-real/Preparacion.png";
 const EVIDENCIA_CARGADO = "/sample-docs/g3/evidencias-real/cargado.png";
 const EVIDENCIA_ENTREGADO = "/sample-docs/g3/evidencias-real/Entregado.png";
 
@@ -104,7 +104,10 @@ const geoByCity: Array<{ key: string; lat: number; lng: number; direccion: strin
   { key: "barquisimeto", lat: 10.0739, lng: -69.3228, direccion: "Punto de entrega Barquisimeto, Lara" },
   { key: "maracay", lat: 10.2469, lng: -67.5958, direccion: "Hub de entregas Maracay, Aragua" },
   { key: "los teques", lat: 10.3446, lng: -67.0433, direccion: "Zona de entrega Los Teques, Miranda" },
-  { key: "farmatodo cedis maracay", lat: 10.2418, lng: -67.6018, direccion: "CEDIS Farmatodo Maracay, Aragua" },
+  { key: "farmatodo cedis charallave", lat: 10.2071743, lng: -66.8645981, direccion: "CEDIS Farmatodo Charallave, Miranda" },
+  { key: "charallave", lat: 10.2071743, lng: -66.8645981, direccion: "Charallave, Miranda" },
+  { key: "nestlé venezuela", lat: 10.4344464, lng: -66.8599431, direccion: "Nestlé Venezuela, Los Ruices, Caracas" },
+  { key: "nestle venezuela", lat: 10.4344464, lng: -66.8599431, direccion: "Nestlé Venezuela, Los Ruices, Caracas" },
   { key: "puerto cabello", lat: 10.4731, lng: -68.0125, direccion: "Puerto Cabello, Carabobo" },
 ];
 
