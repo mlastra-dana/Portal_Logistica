@@ -15,7 +15,7 @@ export function LandingPage() {
     <div className="min-h-screen bg-brand-surface text-brand-text md:flex md:flex-col">
       <header className="border-b border-brand-border bg-white">
         <div className="mx-auto flex max-w-[1360px] items-center px-4 py-4 md:px-8">
-          <BrandMark compact />
+          <BrandMark compact className="h-16 md:h-[76px]" />
         </div>
       </header>
 

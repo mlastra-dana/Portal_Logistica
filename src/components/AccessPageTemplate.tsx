@@ -53,7 +53,7 @@ export function AccessPageTemplate({
       <header className="sticky top-0 z-20 border-b border-brand-border bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           <Link to="/access" aria-label="Ir al acceso del portal G3 Logistica">
-            <BrandMark compact />
+            <BrandMark compact className="h-16 md:h-[76px]" />
           </Link>
           <Button className={actionButton} onClick={exitToSelector}>
             Salir
@@ -61,14 +61,9 @@ export function AccessPageTemplate({
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 md:py-16">
-        <Card className="rounded-xl border-brand-border bg-white p-6 shadow-none md:p-8">
-          <div className="mb-6 border-l-4 border-brand-primary pl-4">
-            <h1 className="text-2xl font-extrabold text-brand-ink md:text-3xl">Portal G3 Logistica</h1>
-            <p className="mt-2 text-sm text-brand-muted">Operacion de almacen y distribucion con seguimiento de despachos.</p>
-          </div>
-
-          <form className="rounded-lg border border-brand-border bg-brand-surface p-4" onSubmit={onUserSubmit}>
+      <section className="mx-auto max-w-xl px-4 py-12 md:py-16">
+        <Card className="rounded-xl border-brand-border bg-white p-5 shadow-none md:p-6">
+          <form className="mx-auto max-w-md rounded-lg border border-brand-border bg-brand-surface p-4" onSubmit={onUserSubmit}>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">Perfil Administrador</p>
             <p className="mt-2 text-sm text-brand-muted">Acceso interno administrativo para seguimiento de despachos G3.</p>
 
