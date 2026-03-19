@@ -170,16 +170,14 @@ function DocumentDetailModal({
           </div>
         </div>
 
-        <div className="grid gap-4 p-4 md:grid-cols-[1.2fr_2fr]">
-          <div className="rounded-lg border border-brand-border bg-brand-surface p-4 text-sm">
-            <p><strong>Cliente:</strong> {document.cliente}</p>
-            <p><strong>Tipo:</strong> {document.tipoDocumento}</p>
-            <p><strong>Numero:</strong> {document.numeroFactura || document.numeroGuia || "N/A"}</p>
-            <p><strong>Origen:</strong> {document.origen || "N/A"}</p>
-            <p><strong>Destino:</strong> {document.destino || "N/A"}</p>
-            <p><strong>Fecha:</strong> {document.fechaEmision}</p>
+        <div className="p-4">
+          <div className="mb-3 rounded-md border border-brand-border bg-brand-surface px-3 py-2 text-sm">
+            <p className="font-semibold text-brand-ink">{document.cliente}</p>
+            <p className="text-brand-muted">
+              {document.tipoDocumento} {document.numeroFactura || document.numeroGuia || "N/A"} · {document.fechaEmision}
+            </p>
           </div>
-          <div className="h-[65vh] overflow-hidden rounded-lg border border-brand-border bg-white">
+          <div className="h-[72vh] overflow-hidden rounded-lg border border-brand-border bg-white">
             <iframe src={resolveDocumentUrl(document)} title={document.fileName} className="h-full w-full" />
           </div>
         </div>
