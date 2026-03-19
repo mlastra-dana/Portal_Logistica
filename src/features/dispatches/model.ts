@@ -4,7 +4,7 @@ import { mockPatients } from "@/mocks/patients";
 export type DispatchStatus =
   | "en_almacen"
   | "en_preparacion"
-  | "cargado_en_camion"
+  | "cargado"
   | "en_transito"
   | "entregado";
 
@@ -36,10 +36,10 @@ export type DetectedClient = {
   origenDeteccion: string;
 };
 
-const dispatchStatusFlow: DispatchStatus[] = [
+export const DISPATCH_STATUS_FLOW: DispatchStatus[] = [
   "en_almacen",
   "en_preparacion",
-  "cargado_en_camion",
+  "cargado",
   "en_transito",
   "entregado",
 ];
@@ -58,8 +58,8 @@ function hashString(value: string) {
 }
 
 function inferStatus(seed: string): DispatchStatus {
-  const idx = hashString(seed) % dispatchStatusFlow.length;
-  return dispatchStatusFlow[idx];
+  const idx = hashString(seed) % DISPATCH_STATUS_FLOW.length;
+  return DISPATCH_STATUS_FLOW[idx];
 }
 
 function compareByDateDesc(a: ResultDocument, b: ResultDocument) {
@@ -116,7 +116,18 @@ export function buildDispatches(documents: ResultDocument[]): DispatchRecord[] {
     }
   });
 
-  return result.sort((a, b) => b.fecha.localeCompare(a.fecha));
+  const sorted = result.sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+  // Distribucion controlada para demo: garantiza presencia visual de todas las etapas cuando hay suficiente volumen.
+  if (sorted.length >= DISPATCH_STATUS_FLOW.length) {
+    const offset = hashString(sorted[0]?.idDespacho || "g3");
+    return sorted.map((item, index) => ({
+      ...item,
+      estatus: DISPATCH_STATUS_FLOW[(index + offset) % DISPATCH_STATUS_FLOW.length],
+    }));
+  }
+
+  return sorted;
 }
 
 export function detectClientsFromDispatches(dispatches: DispatchRecord[]): DetectedClient[] {
@@ -149,15 +160,15 @@ export function detectClientsFromDispatches(dispatches: DispatchRecord[]): Detec
 }
 
 export function dispatchStatusLabel(status: DispatchStatus) {
-  if (status === "en_almacen") return "En almacen";
-  if (status === "en_preparacion") return "En preparacion";
-  if (status === "cargado_en_camion") return "Cargado en camion";
-  if (status === "en_transito") return "En transito";
+  if (status === "en_almacen") return "En almacén";
+  if (status === "en_preparacion") return "En preparación";
+  if (status === "cargado") return "Cargado";
+  if (status === "en_transito") return "En tránsito";
   return "Entregado";
 }
 
 export function dispatchStatusTone(status: DispatchStatus): "warning" | "success" | "bad" | "default" {
   if (status === "entregado") return "success";
-  if (status === "en_transito" || status === "cargado_en_camion") return "default";
+  if (status === "en_transito" || status === "cargado") return "default";
   return "warning";
 }

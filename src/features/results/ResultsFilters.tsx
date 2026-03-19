@@ -52,10 +52,10 @@ export function ResultsFilters({ filters, onChange }: Props) {
           className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
         >
           <option value="">Todos</option>
-          <option value="en_almacen">En almacen</option>
-          <option value="en_preparacion">En preparacion</option>
-          <option value="cargado_en_camion">Cargado en camion</option>
-          <option value="en_transito">En transito</option>
+          <option value="en_almacen">En almacén</option>
+          <option value="en_preparacion">En preparación</option>
+          <option value="cargado">Cargado</option>
+          <option value="en_transito">En tránsito</option>
           <option value="entregado">Entregado</option>
         </select>
       </label>

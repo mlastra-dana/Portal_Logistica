@@ -3,18 +3,22 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Patient, ResultDocument } from "@/app/types";
 import { AuthedLayout } from "@/components/layout/AuthedLayout";
 import { RestrictedAccess } from "@/components/layout/RestrictedAccess";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import {
+  DashboardStatCard,
+  DispatchTable,
+  DownloadIcon,
+  DispatchSummaryCard,
+  EyeIcon,
+} from "@/features/dispatches/components";
+import {
   buildDispatches,
   detectClientsFromDispatches,
   DispatchRecord,
   DispatchStatus,
-  dispatchStatusLabel,
-  dispatchStatusTone,
 } from "@/features/dispatches/model";
 import { useAuditStore } from "@/features/audit/useAuditStore";
 import { useDemoRoleStore } from "@/features/demo/useDemoRoleStore";
@@ -71,67 +75,79 @@ function DispatchDetailModal({
           <Button variant="ghost" className="rounded-md" onClick={onClose}>Cerrar</Button>
         </div>
 
-        <div className="grid gap-4 p-4 md:grid-cols-2">
-          <div className="rounded-lg border border-brand-border bg-brand-surface p-4 text-sm">
-            <p><strong>Cliente detectado:</strong> {dispatch.cliente}</p>
-            <p><strong>RIF:</strong> {dispatch.rif}</p>
-            <p><strong>Origen:</strong> {dispatch.origen}</p>
-            <p><strong>Destino:</strong> {dispatch.destino}</p>
-            <p><strong>Estado del despacho:</strong> {dispatchStatusLabel(dispatch.estatus)}</p>
-            <p><strong>Factura asociada:</strong> {dispatch.facturaAsociada}</p>
-            <p><strong>Guia de movilizacion asociada:</strong> {dispatch.guiaAsociada}</p>
-          </div>
-
-          <div className="rounded-lg border border-brand-border bg-white p-4 text-sm">
-            <h3 className="font-semibold text-brand-ink">Registros asociados</h3>
-
-            <div className="mt-3 rounded-md border border-brand-border p-3">
-              <p className="font-semibold">Factura</p>
-              <p className="text-brand-muted">{dispatch.facturaAsociada}</p>
-              <div className="mt-2 flex gap-2">
-                <Button
-                  className="rounded-md"
-                  disabled={!dispatch.facturaDoc}
-                  onClick={() => dispatch.facturaDoc && onOpenDocument(dispatch.facturaDoc)}
-                >
-                  Ver factura
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="rounded-md"
-                  disabled={!dispatch.facturaDoc}
-                  onClick={() => dispatch.facturaDoc && onDownload(dispatch.facturaDoc)}
-                >
-                  Descargar
-                </Button>
+        <div className="grid gap-4 p-4">
+          <DispatchSummaryCard
+            dispatch={dispatch}
+            actions={(
+              <div className="grid w-full gap-2 sm:grid-cols-2">
+                <div className="flex items-center justify-between rounded-md border border-brand-border bg-white px-3 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-muted">Factura</span>
+                  <div className="flex items-center gap-2">
+                    <IconActionButton
+                      title="Ver factura"
+                      onClick={() => dispatch.facturaDoc && onOpenDocument(dispatch.facturaDoc)}
+                      disabled={!dispatch.facturaDoc}
+                    >
+                      <EyeIcon className="h-6 w-6 text-white" />
+                    </IconActionButton>
+                    <IconActionButton
+                      title="Descargar factura"
+                      onClick={() => dispatch.facturaDoc && onDownload(dispatch.facturaDoc)}
+                      disabled={!dispatch.facturaDoc}
+                    >
+                      <DownloadIcon className="h-6 w-6 text-white" />
+                    </IconActionButton>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between rounded-md border border-brand-border bg-white px-3 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.08em] text-brand-muted">Guía</span>
+                  <div className="flex items-center gap-2">
+                    <IconActionButton
+                      title="Ver guía"
+                      onClick={() => dispatch.guiaDoc && onOpenDocument(dispatch.guiaDoc)}
+                      disabled={!dispatch.guiaDoc}
+                    >
+                      <EyeIcon className="h-6 w-6 text-white" />
+                    </IconActionButton>
+                    <IconActionButton
+                      title="Descargar guía"
+                      onClick={() => dispatch.guiaDoc && onDownload(dispatch.guiaDoc)}
+                      disabled={!dispatch.guiaDoc}
+                    >
+                      <DownloadIcon className="h-6 w-6 text-white" />
+                    </IconActionButton>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="mt-3 rounded-md border border-brand-border p-3">
-              <p className="font-semibold">Guia de movilizacion</p>
-              <p className="text-brand-muted">{dispatch.guiaAsociada}</p>
-              <div className="mt-2 flex gap-2">
-                <Button
-                  className="rounded-md"
-                  disabled={!dispatch.guiaDoc}
-                  onClick={() => dispatch.guiaDoc && onOpenDocument(dispatch.guiaDoc)}
-                >
-                  Ver guia
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="rounded-md"
-                  disabled={!dispatch.guiaDoc}
-                  onClick={() => dispatch.guiaDoc && onDownload(dispatch.guiaDoc)}
-                >
-                  Descargar
-                </Button>
-              </div>
-            </div>
-          </div>
+            )}
+          />
         </div>
       </Card>
     </div>
+  );
+}
+
+function IconActionButton({
+  title,
+  onClick,
+  disabled,
+  children,
+}: {
+  title: string;
+  onClick: () => void;
+  disabled: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <Button
+      className="h-11 w-11 rounded-md px-0"
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
+      aria-label={title}
+    >
+      {children}
+    </Button>
   );
 }
 
@@ -221,7 +237,7 @@ export function AdminPatientsPage() {
                 }`}
                 onClick={() => {
                   setSelectedClientId(client.id);
-                  navigate("/portal/usuario/despachos");
+                  navigate("/portal/usuario/despachos", { state: { fromClientSelection: true } });
                 }}
                 role="button"
                 tabIndex={0}
@@ -229,7 +245,7 @@ export function AdminPatientsPage() {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     setSelectedClientId(client.id);
-                    navigate("/portal/usuario/despachos");
+                    navigate("/portal/usuario/despachos", { state: { fromClientSelection: true } });
                   }
                 }}
               >
@@ -239,7 +255,6 @@ export function AdminPatientsPage() {
                     <h3 className="mt-1 text-2xl font-semibold text-brand-ink">{client.nombreCliente}</h3>
                     <p className="mt-1 text-xs text-brand-muted">{client.rif}</p>
                   </div>
-                  <Badge tone="success" className="rounded-md uppercase tracking-[0.08em]">{client.estatusCuenta}</Badge>
                 </div>
               </Card>
             );
@@ -252,6 +267,8 @@ export function AdminPatientsPage() {
 
 export function AdminUploadsPage() {
   const location = useLocation();
+  const navigationState = location.state as { fromClientSelection?: boolean } | null;
+  const fromClientSelection = navigationState?.fromClientSelection === true;
   const addEvent = useAuditStore((s) => s.addEvent);
   const documents = useResultsStore((s) => s.documents);
   const selectedClientId = useDemoRoleStore((s) => s.adminSelectedClientId);
@@ -286,8 +303,25 @@ export function AdminUploadsPage() {
     setStatusFilter("all");
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!location.pathname.endsWith("/despachos")) return;
+    if (fromClientSelection) return;
+    setSelectedClientId(null);
+    setClientFilter("all");
+    setStatusFilter("all");
+  }, [location.pathname, fromClientSelection, setSelectedClientId]);
+
+  useEffect(() => {
+    setClientFilter(selectedClientId || "all");
+  }, [selectedClientId]);
+
   const dispatches = useMemo(() => buildDispatches(documents), [documents]);
   const clients = useMemo(() => detectClientsFromDispatches(dispatches), [dispatches]);
+
+  const scopedDispatches = useMemo(() => {
+    if (clientFilter === "all") return dispatches;
+    return dispatches.filter((dispatch) => dispatch.patientId === clientFilter);
+  }, [dispatches, clientFilter]);
 
   const filteredDispatches = useMemo(() => {
     const q = normalizeText(query.trim());
@@ -306,10 +340,11 @@ export function AdminUploadsPage() {
     });
   }, [dispatches, query, clientFilter, statusFilter, typeFilter]);
 
-  const totalDespachos = dispatches.length;
-  const totalEnTransito = dispatches.filter((d) => d.estatus === "en_transito").length;
-  const totalEntregados = dispatches.filter((d) => d.estatus === "entregado").length;
-  const totalClientes = clients.length;
+  const totalDespachos = scopedDispatches.length;
+  const totalEnAlmacen = scopedDispatches.filter((d) => d.estatus === "en_almacen").length;
+  const totalEnPreparacion = scopedDispatches.filter((d) => d.estatus === "en_preparacion").length;
+  const totalEnTransito = scopedDispatches.filter((d) => d.estatus === "en_transito").length;
+  const totalEntregados = scopedDispatches.filter((d) => d.estatus === "entregado").length;
 
   const onDownload = (doc: ResultDocument) => {
     addEvent("download_clicked", "admin-user", `Descarga de ${doc.tipoDocumento} ${doc.id}`);
@@ -321,6 +356,11 @@ export function AdminUploadsPage() {
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
+  };
+
+  const onDownloadDispatch = (dispatch: DispatchRecord) => {
+    if (dispatch.facturaDoc) onDownload(dispatch.facturaDoc);
+    if (dispatch.guiaDoc) onDownload(dispatch.guiaDoc);
   };
 
   const pageTitle = location.pathname.endsWith("/facturas")
@@ -338,23 +378,41 @@ export function AdminUploadsPage() {
           <h1 className="text-2xl font-black text-brand-ink">Despachos operativos</h1>
         </Card>
 
-        <section className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Total de despachos</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalDespachos}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">En transito</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalEnTransito}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Entregados</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalEntregados}</p>
-          </Card>
-          <Card className="rounded-lg shadow-none">
-            <p className="text-xs uppercase tracking-[0.14em] text-brand-muted">Clientes activos detectados</p>
-            <p className="mt-2 text-3xl font-black text-brand-ink">{totalClientes}</p>
-          </Card>
+        <section className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          <DashboardStatCard
+            label="Total de despachos"
+            value={totalDespachos}
+            active={statusFilter === "all"}
+            onClick={() => setStatusFilter("all")}
+          />
+          <DashboardStatCard
+            label="En almacén"
+            value={totalEnAlmacen}
+            accent="en_almacen"
+            active={statusFilter === "en_almacen"}
+            onClick={() => setStatusFilter("en_almacen")}
+          />
+          <DashboardStatCard
+            label="En preparación"
+            value={totalEnPreparacion}
+            accent="en_preparacion"
+            active={statusFilter === "en_preparacion"}
+            onClick={() => setStatusFilter("en_preparacion")}
+          />
+          <DashboardStatCard
+            label="En tránsito"
+            value={totalEnTransito}
+            accent="en_transito"
+            active={statusFilter === "en_transito"}
+            onClick={() => setStatusFilter("en_transito")}
+          />
+          <DashboardStatCard
+            label="Entregados"
+            value={totalEntregados}
+            accent="entregado"
+            active={statusFilter === "entregado"}
+            onClick={() => setStatusFilter("entregado")}
+          />
         </section>
 
         <Card className="mt-4 rounded-lg shadow-none">
@@ -395,93 +453,23 @@ export function AdminUploadsPage() {
                 className="w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm"
               >
                 <option value="all">Todos</option>
-                <option value="en_almacen">En almacen</option>
-                <option value="en_preparacion">En preparacion</option>
-                <option value="cargado_en_camion">Cargado en camion</option>
-                <option value="en_transito">En transito</option>
-                <option value="entregado">Entregado</option>
+                    <option value="en_almacen">En almacén</option>
+                    <option value="en_preparacion">En preparación</option>
+                    <option value="cargado">Cargado</option>
+                    <option value="en_transito">En tránsito</option>
+                    <option value="entregado">Entregado</option>
               </select>
             </div>
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Button variant={typeFilter === "all" ? "dark" : "ghost"} className="rounded-md" onClick={() => setTypeFilter("all")}>Todos</Button>
-            <Button variant={typeFilter === "factura" ? "dark" : "ghost"} className="rounded-md" onClick={() => setTypeFilter("factura")}>Facturas</Button>
-            <Button variant={typeFilter === "guia" ? "dark" : "ghost"} className="rounded-md" onClick={() => setTypeFilter("guia")}>Guias</Button>
-            <Button
-              variant="ghost"
-              className="rounded-md"
-              onClick={() => {
-                setQuery("");
-                setTypeFilter("all");
-                setStatusFilter("all");
-                setClientFilter("all");
-                setSelectedClientId(null);
-              }}
-            >
-              Limpiar filtros
-            </Button>
-          </div>
         </Card>
 
-        <div className="mt-4 overflow-hidden rounded-lg border border-brand-border bg-white">
-          <div className="hidden overflow-auto md:block">
-            <table className="w-full min-w-[1180px] text-left text-sm">
-              <thead className="bg-brand-surface text-brand-muted">
-                <tr>
-                  <th className="px-4 py-3 font-semibold">ID despacho</th>
-                  <th className="px-4 py-3 font-semibold">Cliente</th>
-                  <th className="px-4 py-3 font-semibold">Origen</th>
-                  <th className="px-4 py-3 font-semibold">Destino</th>
-                  <th className="px-4 py-3 font-semibold">Fecha</th>
-                  <th className="px-4 py-3 font-semibold">Estado</th>
-                  <th className="px-4 py-3 font-semibold">Factura asociada</th>
-                  <th className="px-4 py-3 font-semibold">Guia asociada</th>
-                  <th className="px-4 py-3 font-semibold">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDispatches.map((dispatch) => (
-                  <tr key={dispatch.idDespacho} className="border-t border-brand-border">
-                    <td className="px-4 py-3 font-semibold text-brand-ink">{dispatch.idDespacho}</td>
-                    <td className="px-4 py-3">{dispatch.cliente}</td>
-                    <td className="px-4 py-3">{dispatch.origen}</td>
-                    <td className="px-4 py-3">{dispatch.destino}</td>
-                    <td className="px-4 py-3">{dispatch.fecha}</td>
-                    <td className="px-4 py-3">
-                      <Badge tone={dispatchStatusTone(dispatch.estatus)} className="rounded-md uppercase tracking-[0.08em]">
-                        {dispatchStatusLabel(dispatch.estatus)}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3">{dispatch.facturaAsociada}</td>
-                    <td className="px-4 py-3">{dispatch.guiaAsociada}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-2">
-                        <Button className="rounded-md" onClick={() => setSelectedDispatch(dispatch)}>Ver despacho</Button>
-                        <Button
-                          variant="ghost"
-                          className="rounded-md"
-                          disabled={!dispatch.facturaDoc}
-                          onClick={() => dispatch.facturaDoc && setSelectedDoc(dispatch.facturaDoc)}
-                        >
-                          Factura
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          className="rounded-md"
-                          disabled={!dispatch.guiaDoc}
-                          onClick={() => dispatch.guiaDoc && setSelectedDoc(dispatch.guiaDoc)}
-                        >
-                          Guia
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DispatchTable
+          dispatches={filteredDispatches}
+          showClient
+          onView={setSelectedDispatch}
+          onDownloadDispatch={onDownloadDispatch}
+        />
       </AdminGuard>
 
       <DispatchDetailModal
@@ -536,9 +524,9 @@ export function AdminUploadPage() {
       <AdminGuard>
         <Card className="rounded-lg border-brand-border shadow-none">
           <h1 className="text-2xl font-black text-brand-ink">Cargar despacho</h1>
-          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente detectado al que deseas asociar factura o guia de movilizacion.</p>
+          <p className="mt-2 text-sm text-brand-muted">Selecciona el cliente al que deseas asociar factura o guia de movilizacion.</p>
           <div className="mt-3">
-            <Label htmlFor="upload-client-selector">Cliente detectado</Label>
+            <Label htmlFor="upload-client-selector">Cliente</Label>
             <select
               id="upload-client-selector"
               value={selectedClientId || ""}
@@ -552,7 +540,7 @@ export function AdminUploadPage() {
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-xs text-brand-muted">La lista se genera automaticamente desde datos reconocidos en despachos.</p>
+            <p className="mt-2 text-xs text-brand-muted">Selecciona la cuenta cliente para registrar el despacho.</p>
           </div>
         </Card>
 
