@@ -25,10 +25,10 @@ export function LandingPage() {
             <div className="g3-grid absolute inset-0 opacity-25" />
             <div className="relative mx-auto max-w-[1120px]">
               <h1 className="max-w-[700px] text-4xl font-black leading-[1.05] text-white md:text-7xl">
-                Gestion de despachos
+                Gestión de despachos
               </h1>
               <p className="mt-4 max-w-[620px] text-xl text-white/90">
-                Plataforma digital de almacen y distribucion para seguimiento de despachos en tiempo real.
+                Plataforma digital de almacén y distribución para seguimiento de despachos en tiempo real.
               </p>
               <Link to="/access" className="mt-6 inline-block">
                 <Button className="px-8 py-4 text-xl font-bold uppercase !bg-brand-accent !text-white">Acceder</Button>
